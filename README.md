@@ -20,7 +20,7 @@ Projeto iniciado. Estrutura inicial criada.
 
 ## Estrutura
 
-\`\`\`text
+```text
 taskflow/
 ├── backend/
 ├── frontend/
@@ -28,4 +28,4 @@ taskflow/
 │   └── prints/
 ├── README.md
 └── .gitignore
-\`\`\`
+```
