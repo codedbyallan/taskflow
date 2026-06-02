@@ -88,16 +88,14 @@ namespace TaskFlow.Api.Controllers
         [HttpPatch("{id}/complete")]
         public IActionResult CompleteTask(string id)
         {
-            var task = Tasks.FirstOrDefault(t => t.Id == id);
-            if (task == null)
+            var completedTask = _taskService.Complete(id);
+
+            if (completedTask == null)
             {
                 return NotFound();
             }
 
-            task.Status = "completed";
-            task.UpdatedAt = DateTime.UtcNow;
-
-            return Ok(task);
+            return Ok(completedTask);
         }
 
         [HttpDelete("{id}")]

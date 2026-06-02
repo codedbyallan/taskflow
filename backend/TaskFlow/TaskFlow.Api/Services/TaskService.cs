@@ -76,5 +76,19 @@ namespace TaskFlow.Api.Services
             return task;
         }
 
+        public TaskItem? Complete(string id)
+        {
+            var task = GetById(id);
+
+            if (task == null)
+            {
+                return null;
+            }
+
+            task.Status = "completed";
+            task.UpdatedAt = DateTime.UtcNow;
+
+            return task;
+        }
     }
 }
