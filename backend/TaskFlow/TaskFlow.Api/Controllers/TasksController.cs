@@ -103,5 +103,17 @@ namespace TaskFlow.Api.Controllers
 
             return Ok(task);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTask(string id)
+        {
+            var task = Tasks.FirstOrDefault(t => t.Id == id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            Tasks.Remove(task);
+            return NoContent();
+        }
     }
 }

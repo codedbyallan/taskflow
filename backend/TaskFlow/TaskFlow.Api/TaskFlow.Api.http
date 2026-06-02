@@ -55,3 +55,11 @@ Accept: application/json
 ### Concluir tarefa inexistente
 PATCH https://localhost:7064/api/tasks/999/complete
 Accept: application/json
+
+### Excluir tarefa existente
+DELETE https://localhost:7064/api/tasks/1
+
+###
+
+### Excluir tarefa inexistente
+DELETE https://localhost:7064/api/tasks/999
