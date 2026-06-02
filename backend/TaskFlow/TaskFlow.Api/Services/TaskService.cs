@@ -59,6 +59,22 @@ namespace TaskFlow.Api.Services
             return newTask;
         }
 
+        public TaskItem? Update(string id, UpdateTaskDto dto)
+        {
+            var task = GetById(id);
+
+            if (task == null)
+            {
+                return null;
+            }
+
+            task.Title = string.IsNullOrWhiteSpace(dto.Title) ? task.Title : dto.Title;
+            task.Description = string.IsNullOrWhiteSpace(dto.Description) ? task.Description : dto.Description;
+            task.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? task.Priority : dto.Priority;
+            task.UpdatedAt = DateTime.UtcNow;
+
+            return task;
+        }
 
     }
 }
