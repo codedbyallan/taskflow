@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskFlow.Api.DTOs;
 using TaskFlow.Api.Models;
+
 
 namespace TaskFlow.Api.Controllers
 {
@@ -32,6 +34,30 @@ namespace TaskFlow.Api.Controllers
         public IActionResult GetTasks()
         {
             return Ok(Tasks);
+        }
+
+        [HttpPost]
+        public IActionResult CreateTask([FromBody] CreateTaskDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Title))
+            {
+                return BadRequest("Title is required.");
+            }
+
+            var newTask = new TaskItem
+            {
+                Id = (Tasks.Count + 1).ToString(),
+                Title = dto.Title,
+                Description = dto.Description,
+                Priority = string.IsNullOrWhiteSpace(dto.Priority) ? "medium" : dto.Priority,
+                Status = "pending",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            Tasks.Add(newTask);
+
+            return Created($"/api/tasks/{newTask.Id}", newTask);
         }
     }
 }

@@ -1,6 +1,15 @@
-@TaskFlow.Api_HostAddress = http://localhost:5207
-
-GET {{TaskFlow.Api_HostAddress}}/weatherforecast/
+### Listar tarefas
+GET https://localhost:7064/api/tasks
 Accept: application/json
 
 ###
+
+### Criar tarefa
+POST https://localhost:7064/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Estudar POST no ASP.NET Core",
+  "description": "Criar a primeira tarefa pela API",
+  "priority": "high"
+}
