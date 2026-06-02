@@ -45,3 +45,13 @@ Content-Type: application/json
   "description": "Esse teste deve retornar 404",
   "priority": "low"
 }
+
+### Concluir tarefa existente
+PATCH https://localhost:7064/api/tasks/2/complete
+Accept: application/json
+
+###
+
+### Concluir tarefa inexistente
+PATCH https://localhost:7064/api/tasks/999/complete
+Accept: application/json

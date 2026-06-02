@@ -24,7 +24,7 @@ namespace TaskFlow.Api.Controllers
                 Id = "2",
                 Title = "Criar o model TaskItem",
                 Description = "Representar uma tarefa dentro do backend.",
-                Status = "completed",
+                Status = "pending",
                 Priority = "high"
             }
         ];
@@ -84,6 +84,21 @@ namespace TaskFlow.Api.Controllers
             task.Title = string.IsNullOrWhiteSpace(dto.Title) ? task.Title : dto.Title;
             task.Description = string.IsNullOrWhiteSpace(dto.Description) ? task.Description : dto.Description;
             task.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? task.Priority : dto.Priority;
+            task.UpdatedAt = DateTime.UtcNow;
+
+            return Ok(task);
+        }
+
+        [HttpPatch("{id}/complete")]
+        public IActionResult CompleteTask(string id)
+        {
+            var task = Tasks.FirstOrDefault(t => t.Id == id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.Status = "completed";
             task.UpdatedAt = DateTime.UtcNow;
 
             return Ok(task);
