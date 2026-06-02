@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Api.DTOs;
 using TaskFlow.Api.Models;
+using TaskFlow.Api.Services;
 
 
 namespace TaskFlow.Api.Controllers
@@ -9,6 +10,13 @@ namespace TaskFlow.Api.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
+        private readonly TaskService _taskService;
+        
+        public TasksController(TaskService taskService)
+        {
+            _taskService = taskService;
+        }
+
         private static readonly List<TaskItem> Tasks =
         [
             new TaskItem
@@ -33,7 +41,8 @@ namespace TaskFlow.Api.Controllers
         [HttpGet]
         public IActionResult GetTasks()
         {
-            return Ok(Tasks);
+            var tasks = _taskService.GetAll();
+            return Ok(tasks);
         }
 
         [HttpPost]
