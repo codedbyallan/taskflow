@@ -23,3 +23,25 @@ Accept: application/json
 ### Buscar tarefa por ID inexistente
 GET https://localhost:7064/api/tasks/999
 Accept: application/json
+
+### Atualizar tarefa existente
+PUT https://localhost:7064/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Estudar PUT no ASP.NET Core",
+  "description": "Atualizar uma tarefa existente usando UpdateTaskDto",
+  "priority": "high"
+}
+
+###
+
+### Atualizar tarefa inexistente
+PUT https://localhost:7064/api/tasks/999
+Content-Type: application/json
+
+{
+  "title": "Tarefa inexistente",
+  "description": "Esse teste deve retornar 404",
+  "priority": "low"
+}

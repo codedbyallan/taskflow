@@ -71,5 +71,22 @@ namespace TaskFlow.Api.Controllers
 
             return Ok(task);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateTask(string id, [FromBody] UpdateTaskDto dto)
+        {
+            var task = Tasks.FirstOrDefault(t => t.Id == id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.Title = string.IsNullOrWhiteSpace(dto.Title) ? task.Title : dto.Title;
+            task.Description = string.IsNullOrWhiteSpace(dto.Description) ? task.Description : dto.Description;
+            task.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? task.Priority : dto.Priority;
+            task.UpdatedAt = DateTime.UtcNow;
+
+            return Ok(task);
+        }
     }
 }
