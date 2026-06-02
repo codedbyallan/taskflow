@@ -80,9 +80,9 @@ namespace TaskFlow.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteTask(string id)
         {
-            var deletedTask = _taskService.Delete(id);
+            var taskDeleted = _taskService.Delete(id);
 
-            if (!deletedTask)
+            if (!taskDeleted)
             {
                 return NotFound();
             }

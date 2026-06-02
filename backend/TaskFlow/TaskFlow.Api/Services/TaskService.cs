@@ -38,7 +38,7 @@ namespace TaskFlow.Api.Services
 
         public TaskItem? Create(CreateTaskDto dto)
         {
-            if (string.IsNullOrEmpty(dto.Title))
+            if (string.IsNullOrWhiteSpace(dto.Title))
             {
                 return null;
             }
@@ -48,7 +48,7 @@ namespace TaskFlow.Api.Services
                 Id = _nextId.ToString(),
                 Title = dto.Title,
                 Description = dto.Description,
-                Priority = string.IsNullOrEmpty(dto.Priority) ? "medium" : dto.Priority,
+                Priority = string.IsNullOrWhiteSpace(dto.Priority) ? "medium" : dto.Priority,
                 Status = "pending",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
