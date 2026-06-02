@@ -13,3 +13,13 @@ Content-Type: application/json
   "description": "Criar a primeira tarefa pela API",
   "priority": "high"
 }
+
+### Buscar tarefa por ID existente
+GET https://localhost:7064/api/tasks/1
+Accept: application/json
+
+###
+
+### Buscar tarefa por ID inexistente
+GET https://localhost:7064/api/tasks/999
+Accept: application/json

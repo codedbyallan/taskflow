@@ -59,5 +59,17 @@ namespace TaskFlow.Api.Controllers
 
             return Created($"/api/tasks/{newTask.Id}", newTask);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetTask(string id)
+        {
+            var task = Tasks.FirstOrDefault(t => t.Id == id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(task);
+        }
     }
 }
