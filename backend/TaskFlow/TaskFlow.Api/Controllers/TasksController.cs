@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Api.DTOs;
-using TaskFlow.Api.Models;
 using TaskFlow.Api.Services;
 
 
@@ -16,26 +15,6 @@ namespace TaskFlow.Api.Controllers
         {
             _taskService = taskService;
         }
-
-        private static readonly List<TaskItem> Tasks =
-        [
-            new TaskItem
-            {
-                Id = "1",
-                Title = "Estudar controllers no ASP.NET Core",
-                Description = "Entender como uma rota da API responde uma requisição HTTP.",
-                Status = "pending",
-                Priority = "medium"
-            },
-            new TaskItem
-            {
-                Id = "2",
-                Title = "Criar o model TaskItem",
-                Description = "Representar uma tarefa dentro do backend.",
-                Status = "pending",
-                Priority = "high"
-            }
-        ];
 
 
         [HttpGet]
@@ -101,12 +80,12 @@ namespace TaskFlow.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteTask(string id)
         {
-            var task = Tasks.FirstOrDefault(t => t.Id == id);
-            if (task == null)
+            var deletedTask = _taskService.Delete(id);
+
+            if (!deletedTask)
             {
                 return NotFound();
             }
-            Tasks.Remove(task);
             return NoContent();
         }
     }

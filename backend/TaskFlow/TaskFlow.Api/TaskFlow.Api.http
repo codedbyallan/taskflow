@@ -47,7 +47,7 @@ Content-Type: application/json
 }
 
 ### Concluir tarefa existente
-PATCH https://localhost:7064/api/tasks/1  /complete
+PATCH https://localhost:7064/api/tasks/1/complete
 Accept: application/json
 
 ###
