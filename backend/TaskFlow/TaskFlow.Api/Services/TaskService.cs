@@ -1,4 +1,5 @@
 ﻿using TaskFlow.Api.Models;
+using TaskFlow.Api.DTOs;
 
 namespace TaskFlow.Api.Services
 {
@@ -24,6 +25,8 @@ namespace TaskFlow.Api.Services
             }
         ];
 
+        private int _nextId = 3;
+
         public List<TaskItem> GetAll()
         {
             return _tasks;
@@ -32,5 +35,30 @@ namespace TaskFlow.Api.Services
         {
             return _tasks.FirstOrDefault(task => task.Id == id);
         }
+
+        public TaskItem? Create(CreateTaskDto dto)
+        {
+            if (string.IsNullOrEmpty(dto.Title))
+            {
+                return null;
+            }
+
+            var newTask = new TaskItem
+            {
+                Id = _nextId.ToString(),
+                Title = dto.Title,
+                Description = dto.Description,
+                Priority = string.IsNullOrEmpty(dto.Priority) ? "medium" : dto.Priority,
+                Status = "pending",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _nextId++;
+            _tasks.Add(newTask);
+            return newTask;
+        }
+
+
     }
 }

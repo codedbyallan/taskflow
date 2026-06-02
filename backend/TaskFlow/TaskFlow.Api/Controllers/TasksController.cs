@@ -61,23 +61,12 @@ namespace TaskFlow.Api.Controllers
         [HttpPost]
         public IActionResult CreateTask([FromBody] CreateTaskDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Title))
+            var newTask = _taskService.Create(dto);
+
+            if (newTask == null)
             {
                 return BadRequest("Title is required.");
             }
-
-            var newTask = new TaskItem
-            {
-                Id = (Tasks.Count + 1).ToString(),
-                Title = dto.Title,
-                Description = dto.Description,
-                Priority = string.IsNullOrWhiteSpace(dto.Priority) ? "medium" : dto.Priority,
-                Status = "pending",
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            Tasks.Add(newTask);
 
             return Created($"/api/tasks/{newTask.Id}", newTask);
         }
