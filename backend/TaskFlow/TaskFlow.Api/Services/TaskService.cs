@@ -28,5 +28,9 @@ namespace TaskFlow.Api.Services
         {
             return _tasks;
         }
+        public TaskItem? GetById(string id)
+        {
+            return _tasks.FirstOrDefault(task => task.Id == id);
+        }
     }
 }

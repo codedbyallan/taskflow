@@ -45,6 +45,19 @@ namespace TaskFlow.Api.Controllers
             return Ok(tasks);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetTask(string id)
+        {
+            var task = _taskService.GetById(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(task);
+        }
+
         [HttpPost]
         public IActionResult CreateTask([FromBody] CreateTaskDto dto)
         {
@@ -69,17 +82,6 @@ namespace TaskFlow.Api.Controllers
             return Created($"/api/tasks/{newTask.Id}", newTask);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetTask(string id)
-        {
-            var task = Tasks.FirstOrDefault(t => t.Id == id);
-            if (task == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(task);
-        }
 
         [HttpPut("{id}")]
         public IActionResult UpdateTask(string id, [FromBody] UpdateTaskDto dto)
