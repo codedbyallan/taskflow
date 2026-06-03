@@ -41,6 +41,7 @@ namespace TaskFlow.Api.Repositories
             newTask.Id = _nextId.ToString();
             _nextId++;
             _tasks.Add(newTask);
+
             return newTask;
         }
 
@@ -52,6 +53,7 @@ namespace TaskFlow.Api.Repositories
                 return null;
             }
             _tasks[index] = updatedTask;
+
             return updatedTask;
         }
 
@@ -63,6 +65,7 @@ namespace TaskFlow.Api.Repositories
                 return false;
             }
             _tasks.Remove(task);
+
             return true;
         }
     }
