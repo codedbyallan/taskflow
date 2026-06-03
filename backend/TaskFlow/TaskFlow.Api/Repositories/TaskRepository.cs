@@ -1,9 +1,21 @@
-﻿using TaskFlow.Api.Models;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using TaskFlow.Api.Models;
+using TaskFlow.Api.Settings;
 
 namespace TaskFlow.Api.Repositories
 {
     public class TaskRepository
     {
+        private readonly IMongoCollection<TaskItem> _tasksCollection;
+        public TaskRepository(IOptions<MongoDbSettings> mongoDbSettings)
+        {
+            var settings = mongoDbSettings.Value;
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+            _tasksCollection = database.GetCollection<TaskItem>(settings.TasksCollectionName);
+        }
+
         private readonly List<TaskItem> _tasks =
         [
             new TaskItem
