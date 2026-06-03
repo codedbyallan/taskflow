@@ -41,15 +41,15 @@ namespace TaskFlow.Api.Repositories
 
         public TaskItem? Update(TaskItem updatedTask)
         {
-            if (string.IsNullOrEmpty(updatedTask.Id) || !ObjectId.TryParse(updatedTask.Id, out _))
+            if (string.IsNullOrWhiteSpace(updatedTask.Id) || !ObjectId.TryParse(updatedTask.Id, out _))
             {
                 return null;
             }
 
             var result = _tasksCollection.ReplaceOne(
-                task => task.Id == updatedTask.Id, 
+                task => task.Id == updatedTask.Id,
                 updatedTask
-                );
+            );
 
             if (result.MatchedCount == 0)
             {
@@ -61,7 +61,6 @@ namespace TaskFlow.Api.Repositories
 
         public bool Delete(string id)
         {
-
             if (!ObjectId.TryParse(id, out _))
             {
                 return false;
