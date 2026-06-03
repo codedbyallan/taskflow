@@ -43,7 +43,7 @@ namespace TaskFlow.Api.Services
         }
         public TaskItem? GetById(string id)
         {
-            return _tasks.FirstOrDefault(task => task.Id == id);
+            return _taskRepository.GetById(id);
         }
 
         public TaskItem? Create(CreateTaskDto dto)

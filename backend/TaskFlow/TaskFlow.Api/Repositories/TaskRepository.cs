@@ -30,5 +30,10 @@ namespace TaskFlow.Api.Repositories
         {
             return _tasks;
         }
+
+        public TaskItem? GetById(string id)
+        {
+            return _tasks.FirstOrDefault(t => t.Id == id);
+        }
     }
 }
