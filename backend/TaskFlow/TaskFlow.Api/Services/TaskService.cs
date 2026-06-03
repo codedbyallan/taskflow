@@ -93,17 +93,25 @@ namespace TaskFlow.Api.Services
 
         public TaskItem? Complete(string id)
         {
-            var task = GetById(id);
+            var existingTask = _taskRepository.GetById(id);
 
-            if (task == null)
+            if (existingTask == null)
             {
                 return null;
             }
 
-            task.Status = "completed";
-            task.UpdatedAt = DateTime.UtcNow;
+            var completedTask = new TaskItem
+            {
+                Id = existingTask.Id,
+                Title = existingTask.Title,
+                Description = existingTask.Description,
+                Priority = existingTask.Priority,
+                Status = "completed",
+                CreatedAt = existingTask.CreatedAt,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-            return task;
+            return _taskRepository.Update(completedTask);
         }
 
         public bool Delete(string id)
