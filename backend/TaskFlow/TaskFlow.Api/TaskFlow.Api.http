@@ -9,13 +9,13 @@ POST https://localhost:7064/api/tasks
 Content-Type: application/json
 
 {
-  "title": "Primeira tarefa no MongoDB",
+  "title": "Segunda tarefa no MongoDB",
   "description": "Testando gravação real no banco",
   "priority": "high"
 }
 
 ### Buscar tarefa por ID existente
-GET https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb
+GET https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c
 Accept: application/json
 
 ###
@@ -25,13 +25,13 @@ GET https://localhost:7064/api/tasks/999
 Accept: application/json
 
 ### Atualizar tarefa existente
-PUT https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb
+PUT https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c
 Content-Type: application/json
 
 {
-  "title": "Tarefa atualizada no MongoDB",
+  "title": "2º Tarefa no MongoDB",
   "description": "Testando update real no banco",
-  "priority": "medium"
+  "priority": "high"
 }
 
 ###
@@ -47,7 +47,7 @@ Content-Type: application/json
 }
 
 ### Concluir tarefa existente
-PATCH https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb/complete
+PATCH https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c/complete
 Accept: application/json
 
 ###
@@ -57,7 +57,7 @@ PATCH https://localhost:7064/api/tasks/999/complete
 Accept: application/json
 
 ### Excluir tarefa existente
-DELETE https://localhost:7064/api/tasks/1
+DELETE https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c
 
 ###
 
