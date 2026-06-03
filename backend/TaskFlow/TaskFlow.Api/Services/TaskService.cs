@@ -55,7 +55,6 @@ namespace TaskFlow.Api.Services
 
             var newTask = new TaskItem
             {
-                Id = _nextId.ToString(),
                 Title = dto.Title,
                 Description = dto.Description,
                 Priority = string.IsNullOrWhiteSpace(dto.Priority) ? "medium" : dto.Priority,
@@ -64,9 +63,7 @@ namespace TaskFlow.Api.Services
                 UpdatedAt = DateTime.UtcNow
             };
 
-            _nextId++;
-            _tasks.Add(newTask);
-            return newTask;
+            return _taskRepository.Create(newTask);
         }
 
         public TaskItem? Update(string id, UpdateTaskDto dto)

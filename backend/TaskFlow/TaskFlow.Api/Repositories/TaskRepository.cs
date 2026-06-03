@@ -35,5 +35,13 @@ namespace TaskFlow.Api.Repositories
         {
             return _tasks.FirstOrDefault(t => t.Id == id);
         }
+
+        public TaskItem Create(TaskItem newTask)
+        {
+            newTask.Id = _nextId.ToString();
+            _nextId++;
+            _tasks.Add(newTask);
+            return newTask;
+        }
     }
 }
