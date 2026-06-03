@@ -43,5 +43,16 @@ namespace TaskFlow.Api.Repositories
             _tasks.Add(newTask);
             return newTask;
         }
+
+        public TaskItem? Update(TaskItem updatedTask)
+        {
+            var index = _tasks.FindIndex(task => task.Id == updatedTask.Id);
+            if (index == -1)
+            {
+                return null;
+            }
+            _tasks[index] = updatedTask;
+            return updatedTask;
+        }
     }
 }

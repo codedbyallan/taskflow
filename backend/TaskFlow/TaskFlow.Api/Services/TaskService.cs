@@ -1,5 +1,7 @@
-﻿using TaskFlow.Api.Models;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.Net.NetworkInformation;
 using TaskFlow.Api.DTOs;
+using TaskFlow.Api.Models;
 using TaskFlow.Api.Repositories;
 
 
@@ -68,19 +70,25 @@ namespace TaskFlow.Api.Services
 
         public TaskItem? Update(string id, UpdateTaskDto dto)
         {
-            var task = GetById(id);
+            var existingTask = _taskRepository.GetById(id);
 
-            if (task == null)
+            if (existingTask == null)
             {
                 return null;
             }
 
-            task.Title = string.IsNullOrWhiteSpace(dto.Title) ? task.Title : dto.Title;
-            task.Description = string.IsNullOrWhiteSpace(dto.Description) ? task.Description : dto.Description;
-            task.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? task.Priority : dto.Priority;
-            task.UpdatedAt = DateTime.UtcNow;
+            var updatedTask = new TaskItem
+            {
+                Id = existingTask.Id,
+                Title = string.IsNullOrWhiteSpace(dto.Title) ? existingTask.Title : dto.Title,
+                Description = string.IsNullOrWhiteSpace(dto.Description) ? existingTask.Description : dto.Description,
+                Priority = string.IsNullOrWhiteSpace(dto.Priority) ? existingTask.Priority : dto.Priority,
+                Status = existingTask.Status,
+                CreatedAt = existingTask.CreatedAt,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-            return task;
+            return _taskRepository.Update(updatedTask);
         }
 
         public TaskItem? Complete(string id)
