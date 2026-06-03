@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using System.Net.NetworkInformation;
-using TaskFlow.Api.DTOs;
+﻿using TaskFlow.Api.DTOs;
 using TaskFlow.Api.Models;
 using TaskFlow.Api.Repositories;
 
@@ -14,31 +12,6 @@ namespace TaskFlow.Api.Services
         {
             _taskRepository = taskRepository;
         }
-
-
-
-        private readonly List<TaskItem> _tasks =
-        [
-            new TaskItem
-            {
-                Id = "1",
-                Title = "Estudar controllers no ASP.NET Core",
-                Description = "Entender como uma rota da API responde uma requisição HTTP.",
-                Status = "pending",
-                Priority = "medium"
-            },
-            new TaskItem
-            {
-                Id = "2",
-                Title = "Criar o model TaskItem",
-                Description = "Representar uma tarefa dentro do backend.",
-                Status = "pending",
-                Priority = "high"
-            }
-        ];
-
-        private int _nextId = 3;
-
         public List<TaskItem> GetAll()
         {
             return _taskRepository.GetAll();
