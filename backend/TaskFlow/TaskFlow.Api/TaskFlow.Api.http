@@ -25,13 +25,13 @@ GET https://localhost:7064/api/tasks/999
 Accept: application/json
 
 ### Atualizar tarefa existente
-PUT https://localhost:7064/api/tasks/1
+PUT https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb
 Content-Type: application/json
 
 {
-  "title": "Estudar PUT no ASP.NET Core",
-  "description": "Atualizar uma tarefa existente usando UpdateTaskDto",
-  "priority": "high"
+  "title": "Tarefa atualizada no MongoDB",
+  "description": "Testando update real no banco",
+  "priority": "medium"
 }
 
 ###
@@ -47,7 +47,7 @@ Content-Type: application/json
 }
 
 ### Concluir tarefa existente
-PATCH https://localhost:7064/api/tasks/1/complete
+PATCH https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb/complete
 Accept: application/json
 
 ###

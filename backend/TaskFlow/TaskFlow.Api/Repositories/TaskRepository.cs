@@ -61,12 +61,20 @@ namespace TaskFlow.Api.Repositories
 
         public TaskItem? Update(TaskItem updatedTask)
         {
-            var index = _tasks.FindIndex(task => task.Id == updatedTask.Id);
-            if (index == -1)
+            if (string.IsNullOrEmpty(updatedTask.Id) || !ObjectId.TryParse(updatedTask.Id, out _))
             {
                 return null;
             }
-            _tasks[index] = updatedTask;
+
+            var result = _tasksCollection.ReplaceOne(
+                task => task.Id == updatedTask.Id, 
+                updatedTask
+                );
+
+            if (result.MatchedCount == 0)
+            {
+                return null;
+            }
 
             return updatedTask;
         }
