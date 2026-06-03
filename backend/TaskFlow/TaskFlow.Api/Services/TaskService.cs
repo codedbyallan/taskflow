@@ -1,10 +1,20 @@
 ﻿using TaskFlow.Api.Models;
 using TaskFlow.Api.DTOs;
+using TaskFlow.Api.Repositories;
+
 
 namespace TaskFlow.Api.Services
 {
     public class TaskService
     {
+        private readonly TaskRepository _taskRepository;
+        public TaskService(TaskRepository taskRepository)
+        {
+            _taskRepository = taskRepository;
+        }
+
+
+
         private readonly List<TaskItem> _tasks =
         [
             new TaskItem
@@ -29,7 +39,7 @@ namespace TaskFlow.Api.Services
 
         public List<TaskItem> GetAll()
         {
-            return _tasks;
+            return _taskRepository.GetAll();
         }
         public TaskItem? GetById(string id)
         {

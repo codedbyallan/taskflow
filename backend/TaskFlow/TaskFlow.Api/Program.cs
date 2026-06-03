@@ -1,9 +1,11 @@
 using TaskFlow.Api.Services;
+using TaskFlow.Api.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<TaskRepository>();
 builder.Services.AddSingleton<TaskService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
