@@ -40,7 +40,7 @@ namespace TaskFlow.Api.Repositories
 
         public List<TaskItem> GetAll()
         {
-            return _tasks;
+            return _tasksCollection.Find(_ => true).ToList();
         }
 
         public TaskItem? GetById(string id)
