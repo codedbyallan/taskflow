@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Bson;
 using TaskFlow.Api.Models;
 using TaskFlow.Api.Settings;
 
@@ -36,8 +37,6 @@ namespace TaskFlow.Api.Repositories
             }
         ];
 
-        private int _nextId = 3;
-
         public List<TaskItem> GetAll()
         {
             return _tasksCollection.Find(_ => true).ToList();
@@ -45,14 +44,17 @@ namespace TaskFlow.Api.Repositories
 
         public TaskItem? GetById(string id)
         {
-            return _tasks.FirstOrDefault(t => t.Id == id);
+            if (!ObjectId.TryParse(id, out _))
+            {
+                return null;
+            }
+
+            return _tasksCollection.Find(task => task.Id == id).FirstOrDefault();
         }
 
         public TaskItem Create(TaskItem newTask)
         {
-            newTask.Id = _nextId.ToString();
-            _nextId++;
-            _tasks.Add(newTask);
+            _tasksCollection.InsertOne(newTask);
 
             return newTask;
         }

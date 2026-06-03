@@ -9,13 +9,13 @@ POST https://localhost:7064/api/tasks
 Content-Type: application/json
 
 {
-  "title": "Estudar POST no ASP.NET Core",
-  "description": "Criar a primeira tarefa pela API",
+  "title": "Primeira tarefa no MongoDB",
+  "description": "Testando gravação real no banco",
   "priority": "high"
 }
 
 ### Buscar tarefa por ID existente
-GET https://localhost:7064/api/tasks/1
+GET https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb
 Accept: application/json
 
 ###
