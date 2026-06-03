@@ -54,5 +54,16 @@ namespace TaskFlow.Api.Repositories
             _tasks[index] = updatedTask;
             return updatedTask;
         }
+
+        public bool Delete(string id)
+        {
+            var task = GetById(id);
+            if (task == null)
+            {
+                return false;
+            }
+            _tasks.Remove(task);
+            return true;
+        }
     }
 }

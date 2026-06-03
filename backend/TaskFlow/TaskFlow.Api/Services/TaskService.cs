@@ -116,13 +116,7 @@ namespace TaskFlow.Api.Services
 
         public bool Delete(string id)
         {
-            var task = GetById(id);
-            if (task == null)
-            {
-                return false;
-            }
-            _tasks.Remove(task);
-            return true;
+            return _taskRepository.Delete(id);
         }
     }
 }
