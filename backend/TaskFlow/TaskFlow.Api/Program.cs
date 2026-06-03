@@ -1,12 +1,17 @@
-using TaskFlow.Api.Services;
 using TaskFlow.Api.Repositories;
+using TaskFlow.Api.Services;
+using TaskFlow.Api.Settings;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection("MongoDbSettings"));
 builder.Services.AddSingleton<TaskRepository>();
 builder.Services.AddSingleton<TaskService>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
