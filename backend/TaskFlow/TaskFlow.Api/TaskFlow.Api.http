@@ -4,14 +4,26 @@ Accept: application/json
 
 ###
 
-### Criar tarefa
+### Criar tarefa válida
 POST https://localhost:7064/api/tasks
 Content-Type: application/json
 
 {
-  "title": "Segunda tarefa no MongoDB",
-  "description": "Testando gravação real no banco",
-  "priority": "high"
+  "title": "Estudar validações",
+  "description": "Validando CreateTaskDto com DataAnnotations",
+  "priority": "medium"
+}
+
+###
+
+### Criar tarefa inválida - título curto
+POST https://localhost:7064/api/tasks
+Content-Type: application/json
+
+{
+  "title": "ab",
+  "description": "Esse teste deve retornar erro de validação",
+  "priority": "medium"
 }
 
 ### Buscar tarefa por ID existente
@@ -57,7 +69,7 @@ PATCH https://localhost:7064/api/tasks/999/complete
 Accept: application/json
 
 ### Excluir tarefa existente
-DELETE https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c
+DELETE https://localhost:7064/api/tasks/6a20e799215f6b62fe5f6fc1
 
 ###
 
