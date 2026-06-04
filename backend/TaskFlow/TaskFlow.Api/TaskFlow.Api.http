@@ -43,6 +43,18 @@ Content-Type: application/json
 
 ###
 
+### Criar tarefa inválida - prioridade inválida
+POST https://localhost:7064/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Teste prioridade inválida",
+  "description": "Esse teste deve retornar erro de validação",
+  "priority": "urgente"
+}
+
+###
+
 ### Buscar tarefa por ID existente
 GET https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
 Accept: application/json
@@ -95,6 +107,16 @@ Content-Type: application/json
 
 ###
 
+### Atualizar tarefa inválida - prioridade inválida
+PUT https://localhost:7064/api/tasks/6a20b1350035cb0f0b88d5cb
+Content-Type: application/json
+
+{
+  "priority": "urgente"
+}
+
+###
+
 ### Atualizar tarefa inexistente
 PUT https://localhost:7064/api/tasks/000000000000000000000000
 Content-Type: application/json
@@ -126,7 +148,7 @@ Accept: application/json
 ###
 
 ### Excluir tarefa existente
-DELETE https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+DELETE https://localhost:7064/api/tasks/6a20eed0292a78c25bad48cf
 
 ###
 
