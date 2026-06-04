@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { getTasks } from './services/taskService'
+import { createTask, getTasks } from './services/taskService'
 
 function App() {
   const [tasks, setTasks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
+  const [showForm, setShowForm] = useState(false)
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [priority, setPriority] = useState('medium')
+  const [formError, setFormError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     async function loadTasks() {
@@ -26,6 +32,38 @@ function App() {
   const completedTasks = tasks.filter((task) => task.status === 'completed').length
   const pendingTasks = tasks.filter((task) => task.status === 'pending').length
 
+  async function handleCreateTask(event) {
+    event.preventDefault()
+
+    if (!title.trim()) {
+      setFormError('Informe o título da tarefa.')
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+      setFormError('')
+
+      await createTask({
+        title: title.trim(),
+        description: description.trim(),
+        priority,
+      })
+
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
+
+      setTitle('')
+      setDescription('')
+      setPriority('medium')
+      setShowForm(false)
+    } catch (error) {
+      setFormError('Não foi possível criar a tarefa.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <main className="app">
       <section className="hero">
@@ -38,8 +76,11 @@ function App() {
           </p>
         </div>
 
-        <button className="primary-button">
-          Nova tarefa
+        <button
+          className="primary-button"
+          onClick={() => setShowForm((currentValue) => !currentValue)}
+        >
+          {showForm ? 'Fechar formulário' : 'Nova tarefa'}
         </button>
       </section>
 
@@ -70,6 +111,52 @@ function App() {
             <p>Tarefas carregadas diretamente da API.</p>
           </div>
         </div>
+
+        {showForm && (
+          <form className="task-form" onSubmit={handleCreateTask}>
+            <div className="form-grid">
+              <label>
+                Título
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                  placeholder="Ex: Estudar React"
+                />
+              </label>
+
+              <label>
+                Prioridade
+                <select
+                  value={priority}
+                  onChange={(event) => setPriority(event.target.value)}
+                >
+                  <option value="low">Baixa</option>
+                  <option value="medium">Média</option>
+                  <option value="high">Alta</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Descrição
+              <textarea
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                placeholder="Descreva brevemente a tarefa"
+                rows="3"
+              />
+            </label>
+
+            {formError && (
+              <p className="form-error">{formError}</p>
+            )}
+
+            <button className="submit-button" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Salvando...' : 'Salvar tarefa'}
+            </button>
+          </form>
+        )}
 
         {isLoading && (
           <p className="state-message">Carregando tarefas...</p>
