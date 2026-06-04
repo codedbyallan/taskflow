@@ -1,3 +1,7 @@
+### =========================
+### TASKFLOW API - TASKS
+### =========================
+
 ### Listar tarefas
 GET https://localhost:7064/api/tasks
 Accept: application/json
@@ -26,18 +30,61 @@ Content-Type: application/json
   "priority": "medium"
 }
 
+###
+
+### Criar tarefa inválida - título ausente
+POST https://localhost:7064/api/tasks
+Content-Type: application/json
+
+{
+  "description": "Esse teste deve retornar erro porque title é obrigatório",
+  "priority": "medium"
+}
+
+###
+
 ### Buscar tarefa por ID existente
-GET https://localhost:7064/api/tasks/6a20e751215f6b62fe5f6fbf
+GET https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
 Accept: application/json
 
 ###
 
-### Buscar tarefa por ID inexistente
+### Buscar tarefa com ID inválido
 GET https://localhost:7064/api/tasks/999
 Accept: application/json
 
-### Atualizar tarefa existente
-PUT https://localhost:7064/api/tasks/6a20e751215f6b62fe5f6fbf
+###
+
+### Buscar tarefa com ObjectId válido, mas inexistente
+GET https://localhost:7064/api/tasks/000000000000000000000000
+Accept: application/json
+
+###
+
+### Atualizar tarefa existente - dados válidos
+PUT https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+Content-Type: application/json
+
+{
+  "title": "Tarefa atualizada com validação",
+  "description": "Validando UpdateTaskDto com DataAnnotations",
+  "priority": "high"
+}
+
+###
+
+### Atualizar tarefa existente - apenas prioridade
+PUT https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+Content-Type: application/json
+
+{
+  "priority": "medium"
+}
+
+###
+
+### Atualizar tarefa inválida - título curto
+PUT https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
 Content-Type: application/json
 
 {
@@ -49,7 +96,7 @@ Content-Type: application/json
 ###
 
 ### Atualizar tarefa inexistente
-PUT https://localhost:7064/api/tasks/999
+PUT https://localhost:7064/api/tasks/000000000000000000000000
 Content-Type: application/json
 
 {
@@ -58,20 +105,35 @@ Content-Type: application/json
   "priority": "low"
 }
 
+###
+
 ### Concluir tarefa existente
-PATCH https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c/complete
+PATCH https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI/complete
+Accept: application/json
+
+###
+
+### Concluir tarefa com ID inválido
+PATCH https://localhost:7064/api/tasks/999/complete
 Accept: application/json
 
 ###
 
 ### Concluir tarefa inexistente
-PATCH https://localhost:7064/api/tasks/999/complete
+PATCH https://localhost:7064/api/tasks/000000000000000000000000/complete
 Accept: application/json
 
+###
+
 ### Excluir tarefa existente
-DELETE https://localhost:7064/api/tasks/6a20e799215f6b62fe5f6fc1
+DELETE https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+
+###
+
+### Excluir tarefa com ID inválido
+DELETE https://localhost:7064/api/tasks/999
 
 ###
 
 ### Excluir tarefa inexistente
-DELETE https://localhost:7064/api/tasks/999
+DELETE https://localhost:7064/api/tasks/000000000000000000000000
