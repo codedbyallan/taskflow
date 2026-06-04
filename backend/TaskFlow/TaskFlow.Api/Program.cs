@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using TaskFlow.Api.Repositories;
 using TaskFlow.Api.Services;
 using TaskFlow.Api.Settings;
@@ -34,6 +35,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
