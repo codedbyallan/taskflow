@@ -205,3 +205,24 @@ button {
     flex-direction: column;
   }
 }
+
+.state-message {
+  margin: 0;
+  padding: 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.state-message.error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.badge.completed {
+  background: #dcfce7;
+  color: #166534;
+}

@@ -1,6 +1,31 @@
+import { useEffect, useState } from 'react'
 import './App.css'
+import { getTasks } from './services/taskService'
 
 function App() {
+  const [tasks, setTasks] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    async function loadTasks() {
+      try {
+        const data = await getTasks()
+        setTasks(data)
+      } catch (error) {
+        setErrorMessage('Não foi possível carregar as tarefas.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadTasks()
+  }, [])
+
+  const totalTasks = tasks.length
+  const completedTasks = tasks.filter((task) => task.status === 'completed').length
+  const pendingTasks = tasks.filter((task) => task.status === 'pending').length
+
   return (
     <main className="app">
       <section className="hero">
@@ -21,19 +46,19 @@ function App() {
       <section className="summary-grid">
         <article className="summary-card">
           <span>Total</span>
-          <strong>3</strong>
+          <strong>{totalTasks}</strong>
           <p>Tarefas cadastradas</p>
         </article>
 
         <article className="summary-card">
           <span>Pendentes</span>
-          <strong>2</strong>
+          <strong>{pendingTasks}</strong>
           <p>Aguardando conclusão</p>
         </article>
 
         <article className="summary-card">
           <span>Concluídas</span>
-          <strong>1</strong>
+          <strong>{completedTasks}</strong>
           <p>Finalizadas com sucesso</p>
         </article>
       </section>
@@ -42,35 +67,41 @@ function App() {
         <div className="panel-header">
           <div>
             <h2>Minhas tarefas</h2>
-            <p>Visualização inicial estática do TaskFlow.</p>
+            <p>Tarefas carregadas diretamente da API.</p>
           </div>
         </div>
 
-        <div className="task-list">
-          <article className="task-card">
-            <div>
-              <h3>Estudar React com Vite</h3>
-              <p>Entender componentes, JSX, CSS e estrutura inicial do frontend.</p>
-            </div>
-            <span className="badge medium">medium</span>
-          </article>
+        {isLoading && (
+          <p className="state-message">Carregando tarefas...</p>
+        )}
 
-          <article className="task-card">
-            <div>
-              <h3>Integrar frontend com API</h3>
-              <p>Consumir os endpoints do backend usando fetch.</p>
-            </div>
-            <span className="badge high">high</span>
-          </article>
+        {!isLoading && errorMessage && (
+          <p className="state-message error">{errorMessage}</p>
+        )}
 
-          <article className="task-card completed">
-            <div>
-              <h3>Criar backend com MongoDB</h3>
-              <p>CRUD persistente criado com ASP.NET Core e MongoDB Atlas.</p>
-            </div>
-            <span className="badge low">completed</span>
-          </article>
-        </div>
+        {!isLoading && !errorMessage && tasks.length === 0 && (
+          <p className="state-message">Nenhuma tarefa cadastrada ainda.</p>
+        )}
+
+        {!isLoading && !errorMessage && tasks.length > 0 && (
+          <div className="task-list">
+            {tasks.map((task) => (
+              <article
+                key={task.id}
+                className={`task-card ${task.status === 'completed' ? 'completed' : ''}`}
+              >
+                <div>
+                  <h3>{task.title}</h3>
+                  <p>{task.description || 'Sem descrição cadastrada.'}</p>
+                </div>
+
+                <span className={`badge ${task.status === 'completed' ? 'completed' : task.priority}`}>
+                  {task.status === 'completed' ? 'completed' : task.priority}
+                </span>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   )
