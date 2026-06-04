@@ -335,3 +335,24 @@ button {
     justify-content: space-between;
   }
 }
+
+.danger-button {
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.danger-button:hover {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+
+.danger-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}

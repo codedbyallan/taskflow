@@ -37,3 +37,13 @@ export async function completeTask(id) {
 
   return response.json()
 }
+
+export async function deleteTask(id) {
+  const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error('Erro ao excluir tarefa.')
+  }
+}

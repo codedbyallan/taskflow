@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { completeTask, createTask, getTasks } from './services/taskService'
+import { completeTask, createTask, deleteTask, getTasks } from './services/taskService'
 
 function App() {
   const [tasks, setTasks] = useState([])
@@ -77,6 +77,28 @@ function App() {
       setTasks(updatedTasks)
     } catch (error) {
       setErrorMessage('Não foi possível concluir a tarefa.')
+    } finally {
+      setTaskActionId('')
+    }
+  }
+
+  async function handleDeleteTask(id) {
+    const confirmDelete = window.confirm('Deseja realmente excluir esta tarefa?')
+
+    if (!confirmDelete) {
+      return
+    }
+
+    try {
+      setTaskActionId(id)
+      setErrorMessage('')
+
+      await deleteTask(id)
+
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
+    } catch (error) {
+      setErrorMessage('Não foi possível excluir a tarefa.')
     } finally {
       setTaskActionId('')
     }
@@ -214,6 +236,14 @@ function App() {
                       {taskActionId === task.id ? 'Concluindo...' : 'Concluir'}
                     </button>
                   )}
+
+                  <button
+                    className="danger-button"
+                    onClick={() => handleDeleteTask(task.id)}
+                    disabled={taskActionId === task.id}
+                  >
+                    Excluir
+                  </button>
                 </div>
               </article>
             ))}
