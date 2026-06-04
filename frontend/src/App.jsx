@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { completeTask, createTask, deleteTask, getTasks } from './services/taskService'
+import {
+  completeTask,
+  createTask,
+  deleteTask,
+  getTasks,
+  updateTask,
+} from './services/taskService'
 
 function App() {
   const [tasks, setTasks] = useState([])
@@ -13,6 +19,11 @@ function App() {
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [taskActionId, setTaskActionId] = useState('')
+  const [editingTaskId, setEditingTaskId] = useState('')
+  const [editTitle, setEditTitle] = useState('')
+  const [editDescription, setEditDescription] = useState('')
+  const [editPriority, setEditPriority] = useState('medium')
+  const [editError, setEditError] = useState('')
 
   useEffect(() => {
     async function loadTasks() {
@@ -99,6 +110,52 @@ function App() {
       setTasks(updatedTasks)
     } catch (error) {
       setErrorMessage('Não foi possível excluir a tarefa.')
+    } finally {
+      setTaskActionId('')
+    }
+  }
+
+  function handleStartEdit(task) {
+    setEditingTaskId(task.id)
+    setEditTitle(task.title)
+    setEditDescription(task.description || '')
+    setEditPriority(task.priority)
+    setEditError('')
+  }
+
+  function handleCancelEdit() {
+    setEditingTaskId('')
+    setEditTitle('')
+    setEditDescription('')
+    setEditPriority('medium')
+    setEditError('')
+  }
+
+  async function handleUpdateTask(event, id) {
+    event.preventDefault()
+
+    if (!editTitle.trim()) {
+      setEditError('Informe o título da tarefa.')
+      return
+    }
+
+    try {
+      setTaskActionId(id)
+      setEditError('')
+      setErrorMessage('')
+
+      await updateTask(id, {
+        title: editTitle.trim(),
+        description: editDescription.trim(),
+        priority: editPriority,
+      })
+
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
+
+      handleCancelEdit()
+    } catch (error) {
+      setEditError('Não foi possível atualizar a tarefa.')
     } finally {
       setTaskActionId('')
     }
@@ -217,10 +274,69 @@ function App() {
                 key={task.id}
                 className={`task-card ${task.status === 'completed' ? 'completed' : ''}`}
               >
-                <div>
-                  <h3>{task.title}</h3>
-                  <p>{task.description || 'Sem descrição cadastrada.'}</p>
-                </div>
+                {editingTaskId === task.id ? (
+                  <form
+                    className="inline-edit-form"
+                    onSubmit={(event) => handleUpdateTask(event, task.id)}
+                  >
+                    <label>
+                      Título
+                      <input
+                        type="text"
+                        value={editTitle}
+                        onChange={(event) => setEditTitle(event.target.value)}
+                      />
+                    </label>
+
+                    <label>
+                      Descrição
+                      <textarea
+                        value={editDescription}
+                        onChange={(event) => setEditDescription(event.target.value)}
+                        rows="2"
+                      />
+                    </label>
+
+                    <label>
+                      Prioridade
+                      <select
+                        value={editPriority}
+                        onChange={(event) => setEditPriority(event.target.value)}
+                      >
+                        <option value="low">Baixa</option>
+                        <option value="medium">Média</option>
+                        <option value="high">Alta</option>
+                      </select>
+                    </label>
+
+                    {editError && (
+                      <p className="form-error">{editError}</p>
+                    )}
+
+                    <div className="inline-edit-actions">
+                      <button
+                        className="submit-button"
+                        type="submit"
+                        disabled={taskActionId === task.id}
+                      >
+                        {taskActionId === task.id ? 'Salvando...' : 'Salvar'}
+                      </button>
+
+                      <button
+                        className="secondary-button"
+                        type="button"
+                        onClick={handleCancelEdit}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div>
+                    <h3>{task.title}</h3>
+                    <p>{task.description || 'Sem descrição cadastrada.'}</p>
+                  </div>
+                )}
 
                 <div className="task-actions">
                   <span className={`badge ${task.status === 'completed' ? 'completed' : task.priority}`}>
@@ -234,6 +350,16 @@ function App() {
                       disabled={taskActionId === task.id}
                     >
                       {taskActionId === task.id ? 'Concluindo...' : 'Concluir'}
+                    </button>
+                  )}
+
+                  {editingTaskId !== task.id && (
+                    <button
+                      className="secondary-button"
+                      onClick={() => handleStartEdit(task)}
+                      disabled={taskActionId === task.id}
+                    >
+                      Editar
                     </button>
                   )}
 

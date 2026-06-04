@@ -47,3 +47,19 @@ export async function deleteTask(id) {
     throw new Error('Erro ao excluir tarefa.')
   }
 }
+
+export async function updateTask(id, taskData) {
+  const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(taskData),
+  })
+
+  if (!response.ok) {
+    throw new Error('Erro ao atualizar tarefa.')
+  }
+
+  return response.json()
+}

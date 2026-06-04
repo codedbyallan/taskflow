@@ -356,3 +356,38 @@ button {
   cursor: not-allowed;
   opacity: 0.65;
 }
+
+.inline-edit-form {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.inline-edit-form label {
+  display: grid;
+  gap: 6px;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.inline-edit-form input,
+.inline-edit-form select,
+.inline-edit-form textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: white;
+  color: #111827;
+  font: inherit;
+}
+
+.inline-edit-form textarea {
+  resize: vertical;
+}
+
+.inline-edit-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
