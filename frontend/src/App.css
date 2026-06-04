@@ -300,3 +300,38 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+.task-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 10px;
+  align-items: center;
+}
+
+.secondary-button {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: white;
+  color: #1f2937;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 760px) {
+  .task-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

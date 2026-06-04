@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { createTask, getTasks } from './services/taskService'
+import { completeTask, createTask, getTasks } from './services/taskService'
 
 function App() {
   const [tasks, setTasks] = useState([])
@@ -12,6 +12,7 @@ function App() {
   const [priority, setPriority] = useState('medium')
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [taskActionId, setTaskActionId] = useState('')
 
   useEffect(() => {
     async function loadTasks() {
@@ -43,6 +44,7 @@ function App() {
     try {
       setIsSubmitting(true)
       setFormError('')
+      setErrorMessage('')
 
       await createTask({
         title: title.trim(),
@@ -61,6 +63,22 @@ function App() {
       setFormError('Não foi possível criar a tarefa.')
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  async function handleCompleteTask(id) {
+    try {
+      setTaskActionId(id)
+      setErrorMessage('')
+
+      await completeTask(id)
+
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
+    } catch (error) {
+      setErrorMessage('Não foi possível concluir a tarefa.')
+    } finally {
+      setTaskActionId('')
     }
   }
 
@@ -182,9 +200,21 @@ function App() {
                   <p>{task.description || 'Sem descrição cadastrada.'}</p>
                 </div>
 
-                <span className={`badge ${task.status === 'completed' ? 'completed' : task.priority}`}>
-                  {task.status === 'completed' ? 'completed' : task.priority}
-                </span>
+                <div className="task-actions">
+                  <span className={`badge ${task.status === 'completed' ? 'completed' : task.priority}`}>
+                    {task.status === 'completed' ? 'completed' : task.priority}
+                  </span>
+
+                  {task.status !== 'completed' && (
+                    <button
+                      className="secondary-button"
+                      onClick={() => handleCompleteTask(task.id)}
+                      disabled={taskActionId === task.id}
+                    >
+                      {taskActionId === task.id ? 'Concluindo...' : 'Concluir'}
+                    </button>
+                  )}
+                </div>
               </article>
             ))}
           </div>

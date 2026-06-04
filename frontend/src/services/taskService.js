@@ -25,3 +25,15 @@ export async function createTask(taskData) {
 
   return response.json()
 }
+
+export async function completeTask(id) {
+  const response = await fetch(`${API_BASE_URL}/api/tasks/${id}/complete`, {
+    method: 'PATCH',
+  })
+
+  if (!response.ok) {
+    throw new Error('Erro ao concluir tarefa.')
+  }
+
+  return response.json()
+}
