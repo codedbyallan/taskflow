@@ -1,9 +1,18 @@
-﻿namespace TaskFlow.Api.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+
+namespace TaskFlow.Api.DTOs
 {
     public class UpdateTaskDto
     {
-        public string Title { get; set; } = string.Empty;
+        [MinLength(3, ErrorMessage = "Title must have at least 3 characters.")]
+        [StringLength(100, ErrorMessage = "Title must have at most 100 characters.")]
+        public string? Title { get; set; }
+        
+        [StringLength(500, ErrorMessage = "Description must have at most 500 characters.")]
         public string? Description { get; set; }
-        public string Priority { get; set; } = "medium";
+
+        [StringLength(20, ErrorMessage = "Priority must have at most 20 characters.")]
+        public string? Priority { get; set; } = "medium";
     }
 }

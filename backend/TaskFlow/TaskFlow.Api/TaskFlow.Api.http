@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Buscar tarefa por ID existente
-GET https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c
+GET https://localhost:7064/api/tasks/6a20e751215f6b62fe5f6fbf
 Accept: application/json
 
 ###
@@ -37,13 +37,13 @@ GET https://localhost:7064/api/tasks/999
 Accept: application/json
 
 ### Atualizar tarefa existente
-PUT https://localhost:7064/api/tasks/6a20b709a81a4b0039bec30c
+PUT https://localhost:7064/api/tasks/6a20e751215f6b62fe5f6fbf
 Content-Type: application/json
 
 {
-  "title": "2º Tarefa no MongoDB",
-  "description": "Testando update real no banco",
-  "priority": "high"
+  "title": "ab",
+  "description": "Esse teste deve retornar erro de validação",
+  "priority": "medium"
 }
 
 ###
