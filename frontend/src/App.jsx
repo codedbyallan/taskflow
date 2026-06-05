@@ -3,7 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import SummaryCards from "./components/SummaryCards";
 import TaskForm from "./components/TaskForm";
-import TaskCard from "./components/TaskCard";
+import TaskList from "./components/TaskList";
 import {
   completeTask,
   createTask,
@@ -204,40 +204,25 @@ function App() {
           />
         )}
 
-        {isLoading && <p className="state-message">Carregando tarefas...</p>}
-
-        {!isLoading && errorMessage && (
-          <p className="state-message error">{errorMessage}</p>
-        )}
-
-        {!isLoading && !errorMessage && tasks.length === 0 && (
-          <p className="state-message">Nenhuma tarefa cadastrada ainda.</p>
-        )}
-
-        {!isLoading && !errorMessage && tasks.length > 0 && (
-          <div className="task-list">
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                editingTaskId={editingTaskId}
-                editTitle={editTitle}
-                editDescription={editDescription}
-                editPriority={editPriority}
-                editError={editError}
-                taskActionId={taskActionId}
-                onStartEdit={handleStartEdit}
-                onCancelEdit={handleCancelEdit}
-                onUpdateTask={handleUpdateTask}
-                onCompleteTask={handleCompleteTask}
-                onDeleteTask={handleDeleteTask}
-                onEditTitleChange={setEditTitle}
-                onEditDescriptionChange={setEditDescription}
-                onEditPriorityChange={setEditPriority}
-              />
-            ))}
-          </div>
-        )}
+        <TaskList
+          tasks={tasks}
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          editingTaskId={editingTaskId}
+          editTitle={editTitle}
+          editDescription={editDescription}
+          editPriority={editPriority}
+          editError={editError}
+          taskActionId={taskActionId}
+          onStartEdit={handleStartEdit}
+          onCancelEdit={handleCancelEdit}
+          onUpdateTask={handleUpdateTask}
+          onCompleteTask={handleCompleteTask}
+          onDeleteTask={handleDeleteTask}
+          onEditTitleChange={setEditTitle}
+          onEditDescriptionChange={setEditDescription}
+          onEditPriorityChange={setEditPriority}
+        />
       </section>
     </main>
   );
