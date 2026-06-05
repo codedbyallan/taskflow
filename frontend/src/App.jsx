@@ -3,6 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import SummaryCards from "./components/SummaryCards";
 import TaskForm from "./components/TaskForm";
+import TaskCard from "./components/TaskCard";
 import {
   completeTask,
   createTask,
@@ -216,116 +217,24 @@ function App() {
         {!isLoading && !errorMessage && tasks.length > 0 && (
           <div className="task-list">
             {tasks.map((task) => (
-              <article
+              <TaskCard
                 key={task.id}
-                className={`task-card ${
-                  task.status === "completed" ? "completed" : ""
-                }`}
-              >
-                {editingTaskId === task.id ? (
-                  <form
-                    className="inline-edit-form"
-                    onSubmit={(event) => handleUpdateTask(event, task.id)}
-                  >
-                    <label>
-                      Título
-                      <input
-                        type="text"
-                        value={editTitle}
-                        onChange={(event) => setEditTitle(event.target.value)}
-                      />
-                    </label>
-
-                    <label>
-                      Descrição
-                      <textarea
-                        value={editDescription}
-                        onChange={(event) =>
-                          setEditDescription(event.target.value)
-                        }
-                        rows="2"
-                      />
-                    </label>
-
-                    <label>
-                      Prioridade
-                      <select
-                        value={editPriority}
-                        onChange={(event) =>
-                          setEditPriority(event.target.value)
-                        }
-                      >
-                        <option value="low">Baixa</option>
-                        <option value="medium">Média</option>
-                        <option value="high">Alta</option>
-                      </select>
-                    </label>
-
-                    {editError && <p className="form-error">{editError}</p>}
-
-                    <div className="inline-edit-actions">
-                      <button
-                        className="submit-button"
-                        type="submit"
-                        disabled={taskActionId === task.id}
-                      >
-                        {taskActionId === task.id ? "Salvando..." : "Salvar"}
-                      </button>
-
-                      <button
-                        className="secondary-button"
-                        type="button"
-                        onClick={handleCancelEdit}
-                      >
-                        Cancelar
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  <div>
-                    <h3>{task.title}</h3>
-                    <p>{task.description || "Sem descrição cadastrada."}</p>
-                  </div>
-                )}
-
-                <div className="task-actions">
-                  <span
-                    className={`badge ${
-                      task.status === "completed" ? "completed" : task.priority
-                    }`}
-                  >
-                    {task.status === "completed" ? "completed" : task.priority}
-                  </span>
-
-                  {task.status !== "completed" && (
-                    <button
-                      className="secondary-button"
-                      onClick={() => handleCompleteTask(task.id)}
-                      disabled={taskActionId === task.id}
-                    >
-                      {taskActionId === task.id ? "Concluindo..." : "Concluir"}
-                    </button>
-                  )}
-
-                  {editingTaskId !== task.id && (
-                    <button
-                      className="secondary-button"
-                      onClick={() => handleStartEdit(task)}
-                      disabled={taskActionId === task.id}
-                    >
-                      Editar
-                    </button>
-                  )}
-
-                  <button
-                    className="danger-button"
-                    onClick={() => handleDeleteTask(task.id)}
-                    disabled={taskActionId === task.id}
-                  >
-                    Excluir
-                  </button>
-                </div>
-              </article>
+                task={task}
+                editingTaskId={editingTaskId}
+                editTitle={editTitle}
+                editDescription={editDescription}
+                editPriority={editPriority}
+                editError={editError}
+                taskActionId={taskActionId}
+                onStartEdit={handleStartEdit}
+                onCancelEdit={handleCancelEdit}
+                onUpdateTask={handleUpdateTask}
+                onCompleteTask={handleCompleteTask}
+                onDeleteTask={handleDeleteTask}
+                onEditTitleChange={setEditTitle}
+                onEditDescriptionChange={setEditDescription}
+                onEditPriorityChange={setEditPriority}
+              />
             ))}
           </div>
         )}
