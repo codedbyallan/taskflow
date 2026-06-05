@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 import SummaryCards from "./components/SummaryCards";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
@@ -170,61 +171,65 @@ function App() {
   }
 
   return (
-    <main className="app">
-      <Header
-        showForm={showForm}
-        onToggleForm={() => setShowForm((currentValue) => !currentValue)}
-      />
+    <div className="app-shell">
+      <Sidebar />
 
-      <SummaryCards
-        totalTasks={totalTasks}
-        pendingTasks={pendingTasks}
-        completedTasks={completedTasks}
-      />
-
-      <section className="tasks-panel">
-        <div className="panel-header">
-          <div>
-            <h2>Minhas tarefas</h2>
-            <p>Tarefas carregadas diretamente da API.</p>
-          </div>
-        </div>
-
-        {showForm && (
-          <TaskForm
-            title={title}
-            description={description}
-            priority={priority}
-            formError={formError}
-            isSubmitting={isSubmitting}
-            onTitleChange={setTitle}
-            onDescriptionChange={setDescription}
-            onPriorityChange={setPriority}
-            onSubmit={handleCreateTask}
-          />
-        )}
-
-        <TaskList
-          tasks={tasks}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-          editingTaskId={editingTaskId}
-          editTitle={editTitle}
-          editDescription={editDescription}
-          editPriority={editPriority}
-          editError={editError}
-          taskActionId={taskActionId}
-          onStartEdit={handleStartEdit}
-          onCancelEdit={handleCancelEdit}
-          onUpdateTask={handleUpdateTask}
-          onCompleteTask={handleCompleteTask}
-          onDeleteTask={handleDeleteTask}
-          onEditTitleChange={setEditTitle}
-          onEditDescriptionChange={setEditDescription}
-          onEditPriorityChange={setEditPriority}
+      <main className="app">
+        <Header
+          showForm={showForm}
+          onToggleForm={() => setShowForm((currentValue) => !currentValue)}
         />
-      </section>
-    </main>
+
+        <SummaryCards
+          totalTasks={totalTasks}
+          pendingTasks={pendingTasks}
+          completedTasks={completedTasks}
+        />
+
+        <section className="tasks-panel">
+          <div className="panel-header">
+            <div>
+              <h2>Minhas tarefas</h2>
+              <p>Tarefas carregadas diretamente da API.</p>
+            </div>
+          </div>
+
+          {showForm && (
+            <TaskForm
+              title={title}
+              description={description}
+              priority={priority}
+              formError={formError}
+              isSubmitting={isSubmitting}
+              onTitleChange={setTitle}
+              onDescriptionChange={setDescription}
+              onPriorityChange={setPriority}
+              onSubmit={handleCreateTask}
+            />
+          )}
+
+          <TaskList
+            tasks={tasks}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            editingTaskId={editingTaskId}
+            editTitle={editTitle}
+            editDescription={editDescription}
+            editPriority={editPriority}
+            editError={editError}
+            taskActionId={taskActionId}
+            onStartEdit={handleStartEdit}
+            onCancelEdit={handleCancelEdit}
+            onUpdateTask={handleUpdateTask}
+            onCompleteTask={handleCompleteTask}
+            onDeleteTask={handleDeleteTask}
+            onEditTitleChange={setEditTitle}
+            onEditDescriptionChange={setEditDescription}
+            onEditPriorityChange={setEditPriority}
+          />
+        </section>
+      </main>
+    </div>
   );
 }
 

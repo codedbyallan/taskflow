@@ -1,9 +1,19 @@
+import { Plus } from 'lucide-react'
+
 function Header({ showForm, onToggleForm }) {
   return (
     <section className="hero">
-      <div>
-        <span className="eyebrow">TaskFlow</span>
-        <h1>Organize suas tarefas com clareza.</h1>
+      <div className="hero-content">
+        <img
+          className="hero-logo"
+          src="/assets/taskflow-logo-horizontal.png"
+          alt="TaskFlow"
+        />
+
+        <h1>
+          Organize suas tarefas com <span>clareza.</span>
+        </h1>
+
         <p>
           Uma aplicação de gerenciamento de tarefas criada com React, ASP.NET Core
           e MongoDB Atlas.
@@ -14,6 +24,7 @@ function Header({ showForm, onToggleForm }) {
         className="primary-button"
         onClick={onToggleForm}
       >
+        <Plus size={18} />
         {showForm ? 'Fechar formulário' : 'Nova tarefa'}
       </button>
     </section>

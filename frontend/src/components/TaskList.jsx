@@ -1,4 +1,5 @@
-import TaskCard from './TaskCard'
+import { Inbox } from "lucide-react";
+import TaskCard from "./TaskCard";
 
 function TaskList({
   tasks,
@@ -20,15 +21,24 @@ function TaskList({
   onEditPriorityChange,
 }) {
   if (isLoading) {
-    return <p className="state-message">Carregando tarefas...</p>
+    return <p className="state-message">Carregando tarefas...</p>;
   }
 
   if (errorMessage) {
-    return <p className="state-message error">{errorMessage}</p>
+    return <p className="state-message error">{errorMessage}</p>;
   }
 
   if (tasks.length === 0) {
-    return <p className="state-message">Nenhuma tarefa cadastrada ainda.</p>
+    return (
+      <div className="empty-state">
+        <div className="empty-state-icon">
+          <Inbox size={34} strokeWidth={1.8} />
+        </div>
+
+        <strong>Nenhuma tarefa cadastrada ainda.</strong>
+        <p>Clique em “Nova tarefa” para começar a organizar sua rotina.</p>
+      </div>
+    );
   }
 
   return (
@@ -54,7 +64,7 @@ function TaskList({
         />
       ))}
     </div>
-  )
+  );
 }
 
-export default TaskList
+export default TaskList;
