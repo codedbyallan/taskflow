@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
+import SummaryCards from "./components/SummaryCards";
 import {
   completeTask,
   createTask,
@@ -173,26 +174,12 @@ function App() {
         onToggleForm={() => setShowForm((currentValue) => !currentValue)}
       />
 
-      <section className="summary-grid">
-        <article className="summary-card">
-          <span>Total</span>
-          <strong>{totalTasks}</strong>
-          <p>Tarefas cadastradas</p>
-        </article>
-
-        <article className="summary-card">
-          <span>Pendentes</span>
-          <strong>{pendingTasks}</strong>
-          <p>Aguardando conclusão</p>
-        </article>
-
-        <article className="summary-card">
-          <span>Concluídas</span>
-          <strong>{completedTasks}</strong>
-          <p>Finalizadas com sucesso</p>
-        </article>
-      </section>
-
+      <SummaryCards
+        totalTasks={totalTasks}
+        pendingTasks={pendingTasks}
+        completedTasks={completedTasks}
+      />
+      
       <section className="tasks-panel">
         <div className="panel-header">
           <div>
