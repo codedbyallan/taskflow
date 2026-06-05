@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import SummaryCards from "./components/SummaryCards";
+import TaskForm from "./components/TaskForm";
 import {
   completeTask,
   createTask,
@@ -179,7 +180,7 @@ function App() {
         pendingTasks={pendingTasks}
         completedTasks={completedTasks}
       />
-      
+
       <section className="tasks-panel">
         <div className="panel-header">
           <div>
@@ -189,51 +190,17 @@ function App() {
         </div>
 
         {showForm && (
-          <form className="task-form" onSubmit={handleCreateTask}>
-            <div className="form-grid">
-              <label>
-                Título
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  placeholder="Ex: Estudar React"
-                />
-              </label>
-
-              <label>
-                Prioridade
-                <select
-                  value={priority}
-                  onChange={(event) => setPriority(event.target.value)}
-                >
-                  <option value="low">Baixa</option>
-                  <option value="medium">Média</option>
-                  <option value="high">Alta</option>
-                </select>
-              </label>
-            </div>
-
-            <label>
-              Descrição
-              <textarea
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-                placeholder="Descreva brevemente a tarefa"
-                rows="3"
-              />
-            </label>
-
-            {formError && <p className="form-error">{formError}</p>}
-
-            <button
-              className="submit-button"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Salvando..." : "Salvar tarefa"}
-            </button>
-          </form>
+          <TaskForm
+            title={title}
+            description={description}
+            priority={priority}
+            formError={formError}
+            isSubmitting={isSubmitting}
+            onTitleChange={setTitle}
+            onDescriptionChange={setDescription}
+            onPriorityChange={setPriority}
+            onSubmit={handleCreateTask}
+          />
         )}
 
         {isLoading && <p className="state-message">Carregando tarefas...</p>}
