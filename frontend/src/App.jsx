@@ -1,185 +1,177 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import Header from "./components/Header";
 import {
   completeTask,
   createTask,
   deleteTask,
   getTasks,
   updateTask,
-} from './services/taskService'
+} from "./services/taskService";
 
 function App() {
-  const [tasks, setTasks] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [showForm, setShowForm] = useState(false)
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState('medium')
-  const [formError, setFormError] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [taskActionId, setTaskActionId] = useState('')
-  const [editingTaskId, setEditingTaskId] = useState('')
-  const [editTitle, setEditTitle] = useState('')
-  const [editDescription, setEditDescription] = useState('')
-  const [editPriority, setEditPriority] = useState('medium')
-  const [editError, setEditError] = useState('')
+  const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("medium");
+  const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [taskActionId, setTaskActionId] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editPriority, setEditPriority] = useState("medium");
+  const [editError, setEditError] = useState("");
 
   useEffect(() => {
     async function loadTasks() {
       try {
-        const data = await getTasks()
-        setTasks(data)
+        const data = await getTasks();
+        setTasks(data);
       } catch (error) {
-        setErrorMessage('Não foi possível carregar as tarefas.')
+        setErrorMessage("Não foi possível carregar as tarefas.");
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    loadTasks()
-  }, [])
+    loadTasks();
+  }, []);
 
-  const totalTasks = tasks.length
-  const completedTasks = tasks.filter((task) => task.status === 'completed').length
-  const pendingTasks = tasks.filter((task) => task.status === 'pending').length
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(
+    (task) => task.status === "completed"
+  ).length;
+  const pendingTasks = tasks.filter((task) => task.status === "pending").length;
 
   async function handleCreateTask(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!title.trim()) {
-      setFormError('Informe o título da tarefa.')
-      return
+      setFormError("Informe o título da tarefa.");
+      return;
     }
 
     try {
-      setIsSubmitting(true)
-      setFormError('')
-      setErrorMessage('')
+      setIsSubmitting(true);
+      setFormError("");
+      setErrorMessage("");
 
       await createTask({
         title: title.trim(),
         description: description.trim(),
         priority,
-      })
+      });
 
-      const updatedTasks = await getTasks()
-      setTasks(updatedTasks)
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
 
-      setTitle('')
-      setDescription('')
-      setPriority('medium')
-      setShowForm(false)
+      setTitle("");
+      setDescription("");
+      setPriority("medium");
+      setShowForm(false);
     } catch (error) {
-      setFormError('Não foi possível criar a tarefa.')
+      setFormError("Não foi possível criar a tarefa.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
   async function handleCompleteTask(id) {
     try {
-      setTaskActionId(id)
-      setErrorMessage('')
+      setTaskActionId(id);
+      setErrorMessage("");
 
-      await completeTask(id)
+      await completeTask(id);
 
-      const updatedTasks = await getTasks()
-      setTasks(updatedTasks)
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
     } catch (error) {
-      setErrorMessage('Não foi possível concluir a tarefa.')
+      setErrorMessage("Não foi possível concluir a tarefa.");
     } finally {
-      setTaskActionId('')
+      setTaskActionId("");
     }
   }
 
   async function handleDeleteTask(id) {
-    const confirmDelete = window.confirm('Deseja realmente excluir esta tarefa?')
+    const confirmDelete = window.confirm(
+      "Deseja realmente excluir esta tarefa?"
+    );
 
     if (!confirmDelete) {
-      return
+      return;
     }
 
     try {
-      setTaskActionId(id)
-      setErrorMessage('')
+      setTaskActionId(id);
+      setErrorMessage("");
 
-      await deleteTask(id)
+      await deleteTask(id);
 
-      const updatedTasks = await getTasks()
-      setTasks(updatedTasks)
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
     } catch (error) {
-      setErrorMessage('Não foi possível excluir a tarefa.')
+      setErrorMessage("Não foi possível excluir a tarefa.");
     } finally {
-      setTaskActionId('')
+      setTaskActionId("");
     }
   }
 
   function handleStartEdit(task) {
-    setEditingTaskId(task.id)
-    setEditTitle(task.title)
-    setEditDescription(task.description || '')
-    setEditPriority(task.priority)
-    setEditError('')
+    setEditingTaskId(task.id);
+    setEditTitle(task.title);
+    setEditDescription(task.description || "");
+    setEditPriority(task.priority);
+    setEditError("");
   }
 
   function handleCancelEdit() {
-    setEditingTaskId('')
-    setEditTitle('')
-    setEditDescription('')
-    setEditPriority('medium')
-    setEditError('')
+    setEditingTaskId("");
+    setEditTitle("");
+    setEditDescription("");
+    setEditPriority("medium");
+    setEditError("");
   }
 
   async function handleUpdateTask(event, id) {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!editTitle.trim()) {
-      setEditError('Informe o título da tarefa.')
-      return
+      setEditError("Informe o título da tarefa.");
+      return;
     }
 
     try {
-      setTaskActionId(id)
-      setEditError('')
-      setErrorMessage('')
+      setTaskActionId(id);
+      setEditError("");
+      setErrorMessage("");
 
       await updateTask(id, {
         title: editTitle.trim(),
         description: editDescription.trim(),
         priority: editPriority,
-      })
+      });
 
-      const updatedTasks = await getTasks()
-      setTasks(updatedTasks)
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
 
-      handleCancelEdit()
+      handleCancelEdit();
     } catch (error) {
-      setEditError('Não foi possível atualizar a tarefa.')
+      setEditError("Não foi possível atualizar a tarefa.");
     } finally {
-      setTaskActionId('')
+      setTaskActionId("");
     }
   }
 
   return (
     <main className="app">
-      <section className="hero">
-        <div>
-          <span className="eyebrow">TaskFlow</span>
-          <h1>Organize suas tarefas com clareza.</h1>
-          <p>
-            Uma aplicação de gerenciamento de tarefas criada com React, ASP.NET Core
-            e MongoDB Atlas.
-          </p>
-        </div>
-
-        <button
-          className="primary-button"
-          onClick={() => setShowForm((currentValue) => !currentValue)}
-        >
-          {showForm ? 'Fechar formulário' : 'Nova tarefa'}
-        </button>
-      </section>
+      <Header
+        showForm={showForm}
+        onToggleForm={() => setShowForm((currentValue) => !currentValue)}
+      />
 
       <section className="summary-grid">
         <article className="summary-card">
@@ -245,19 +237,19 @@ function App() {
               />
             </label>
 
-            {formError && (
-              <p className="form-error">{formError}</p>
-            )}
+            {formError && <p className="form-error">{formError}</p>}
 
-            <button className="submit-button" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Salvando...' : 'Salvar tarefa'}
+            <button
+              className="submit-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Salvando..." : "Salvar tarefa"}
             </button>
           </form>
         )}
 
-        {isLoading && (
-          <p className="state-message">Carregando tarefas...</p>
-        )}
+        {isLoading && <p className="state-message">Carregando tarefas...</p>}
 
         {!isLoading && errorMessage && (
           <p className="state-message error">{errorMessage}</p>
@@ -272,7 +264,9 @@ function App() {
             {tasks.map((task) => (
               <article
                 key={task.id}
-                className={`task-card ${task.status === 'completed' ? 'completed' : ''}`}
+                className={`task-card ${
+                  task.status === "completed" ? "completed" : ""
+                }`}
               >
                 {editingTaskId === task.id ? (
                   <form
@@ -292,7 +286,9 @@ function App() {
                       Descrição
                       <textarea
                         value={editDescription}
-                        onChange={(event) => setEditDescription(event.target.value)}
+                        onChange={(event) =>
+                          setEditDescription(event.target.value)
+                        }
                         rows="2"
                       />
                     </label>
@@ -301,7 +297,9 @@ function App() {
                       Prioridade
                       <select
                         value={editPriority}
-                        onChange={(event) => setEditPriority(event.target.value)}
+                        onChange={(event) =>
+                          setEditPriority(event.target.value)
+                        }
                       >
                         <option value="low">Baixa</option>
                         <option value="medium">Média</option>
@@ -309,9 +307,7 @@ function App() {
                       </select>
                     </label>
 
-                    {editError && (
-                      <p className="form-error">{editError}</p>
-                    )}
+                    {editError && <p className="form-error">{editError}</p>}
 
                     <div className="inline-edit-actions">
                       <button
@@ -319,7 +315,7 @@ function App() {
                         type="submit"
                         disabled={taskActionId === task.id}
                       >
-                        {taskActionId === task.id ? 'Salvando...' : 'Salvar'}
+                        {taskActionId === task.id ? "Salvando..." : "Salvar"}
                       </button>
 
                       <button
@@ -334,22 +330,26 @@ function App() {
                 ) : (
                   <div>
                     <h3>{task.title}</h3>
-                    <p>{task.description || 'Sem descrição cadastrada.'}</p>
+                    <p>{task.description || "Sem descrição cadastrada."}</p>
                   </div>
                 )}
 
                 <div className="task-actions">
-                  <span className={`badge ${task.status === 'completed' ? 'completed' : task.priority}`}>
-                    {task.status === 'completed' ? 'completed' : task.priority}
+                  <span
+                    className={`badge ${
+                      task.status === "completed" ? "completed" : task.priority
+                    }`}
+                  >
+                    {task.status === "completed" ? "completed" : task.priority}
                   </span>
 
-                  {task.status !== 'completed' && (
+                  {task.status !== "completed" && (
                     <button
                       className="secondary-button"
                       onClick={() => handleCompleteTask(task.id)}
                       disabled={taskActionId === task.id}
                     >
-                      {taskActionId === task.id ? 'Concluindo...' : 'Concluir'}
+                      {taskActionId === task.id ? "Concluindo..." : "Concluir"}
                     </button>
                   )}
 
@@ -377,7 +377,7 @@ function App() {
         )}
       </section>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
