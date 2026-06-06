@@ -11,3 +11,15 @@ services:
       MongoDbSettings__ConnectionString: ${MONGODB_CONNECTION_STRING}
       MongoDbSettings__DatabaseName: ${MONGODB_DATABASE_NAME}
       MongoDbSettings__TasksCollectionName: ${MONGODB_TASKS_COLLECTION_NAME}
+
+  taskflow-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    container_name: taskflow-web
+    ports:
+      - "3000:80"
+    depends_on:
+      - taskflow-api
