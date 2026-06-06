@@ -2,51 +2,91 @@
 
 Gerenciador inteligente de tarefas desenvolvido como projeto prático de portfólio.
 
-O TaskFlow é uma aplicação fullstack para organização de tarefas, construída com backend em ASP.NET Core Web API, banco de dados MongoDB Atlas e frontend em React com Vite. O projeto começou como um CRUD simples e evoluiu para um painel visual moderno com vencimento de tarefas, busca, filtros, agrupamento por prazo e indicadores de urgência.
+O TaskFlow é uma aplicação fullstack para organização de tarefas, construída com **ASP.NET Core Web API**, **MongoDB Atlas** e **React com Vite**. O projeto começou como um CRUD simples e evoluiu para um painel visual moderno com vencimento de tarefas, busca, filtros, agrupamento por prazo, indicadores de urgência, testes automatizados, Docker e deploy em produção.
+
+---
+
+## Links do projeto
+
+- **Frontend publicado:** https://taskflow-web-e6fr.onrender.com
+- **Backend publicado:** https://taskflow-api-jkpb.onrender.com/api/tasks
+- **Repositório:** https://github.com/codedbyallan/taskflow
+
+> Observação: como o projeto está hospedado no plano gratuito do Render, a primeira requisição pode demorar alguns segundos quando o serviço estiver inativo.
+
+---
+
+## Preview
+
+### Dashboard principal
+
+![Dashboard do TaskFlow](docs/prints/01-home-dashboard.png)
+
+### Criação de tarefa
+
+![Formulário de criação de tarefa](docs/prints/02-criar-tarefa.png)
+
+### Tarefas agrupadas por prazo
+
+![Tarefas agrupadas por prazo](docs/prints/03-tarefas-agrupadas.png)
+
+### Filtros de tarefas
+
+![Filtros do TaskFlow](docs/prints/04-filtros.png)
+
+### Busca de tarefas
+
+![Busca de tarefas](docs/prints/05-busca.png)
+
+### Edição de tarefa
+
+![Edição de tarefa](docs/prints/06-editar-tarefa.png)
+
+### API publicada no Render
+
+![API publicada no Render](docs/prints/07-api-render.png)
 
 ---
 
 ## Objetivo
 
-Criar uma aplicação web para cadastrar, listar, editar, concluir, excluir e organizar tarefas de forma prática, evoluindo gradualmente de uma API simples para uma solução fullstack com persistência real, interface moderna, documentação técnica, testes, Docker e deploy.
+Criar uma aplicação web para cadastrar, listar, editar, concluir, excluir e organizar tarefas de forma prática, evoluindo gradualmente de uma API simples para uma solução fullstack com persistência real, interface moderna, documentação técnica, testes automatizados, Docker e deploy.
 
-Este projeto faz parte de uma trilha prática de estudos para evolução de portfólio como desenvolvedor, consolidando conceitos aplicados no projeto acadêmico SIGA e expandindo a prática com uma aplicação menor, controlada e bem documentada.
+Este projeto faz parte de uma trilha prática de estudos para evolução de portfólio como desenvolvedor, consolidando conceitos aplicados em projetos anteriores e expandindo a prática com uma aplicação menor, controlada e bem documentada.
 
 ---
 
 ## Status do projeto
 
-Projeto em fase de **MVP robusto local**.
+Projeto concluído como **MVP robusto publicado**.
 
-Até o momento, o TaskFlow possui:
+O TaskFlow possui:
 
 - backend funcional em ASP.NET Core Web API;
 - CRUD completo de tarefas;
 - persistência real com MongoDB Atlas;
 - arquitetura em camadas: Controller, Service e Repository;
+- interface `ITaskRepository` para desacoplamento e testes;
 - DTOs para criação e atualização de tarefas;
 - validações com DataAnnotations;
-- documentação visual da API com Scalar;
-- configuração segura da connection string com User Secrets;
+- documentação visual da API com Scalar em ambiente local;
+- configuração segura da connection string com User Secrets e variáveis de ambiente;
 - frontend React + Vite integrado com a API;
 - layout moderno com sidebar, hero visual, cards de resumo e assets próprios;
 - criação, edição, conclusão e exclusão de tarefas pelo frontend;
 - data de vencimento opcional para tarefas;
-- indicadores visuais de prazo: atrasada, hoje, amanhã, próximos dias, futura e concluída;
+- indicadores visuais de prazo;
 - busca por título e descrição;
 - filtros rápidos por status e prazo;
 - agrupamento de tarefas por prazo;
 - ordenação por vencimento e prioridade;
-- build de produção do frontend validado.
-
-Próximas etapas planejadas para fechamento do projeto:
-
-- atualizar documentação técnica com prints;
-- adicionar testes automatizados;
-- dockerizar backend e frontend;
-- realizar deploy do backend;
-- realizar deploy do frontend;
-- atualizar README final com links publicados, prints e instruções completas.
+- testes automatizados no backend com xUnit;
+- Dockerfile para backend;
+- Dockerfile para frontend;
+- Docker Compose para subir backend e frontend localmente;
+- deploy do backend no Render;
+- deploy do frontend no Render;
+- README final com prints, links e instruções completas.
 
 ---
 
@@ -60,6 +100,7 @@ Próximas etapas planejadas para fechamento do projeto:
 - MongoDB.Driver
 - Scalar
 - User Secrets
+- xUnit
 
 ### Banco de dados
 
@@ -73,20 +114,21 @@ Próximas etapas planejadas para fechamento do projeto:
 - CSS
 - Lucide React
 
+### Infraestrutura
+
+- Docker
+- Docker Compose
+- Render Web Service
+- Render Static Site
+
 ### Versionamento
 
 - Git
 - GitHub
 
-### Infraestrutura prevista
-
-- Docker
-- Render ou serviço equivalente para deploy do backend
-- Render, Vercel ou Netlify para deploy do frontend
-
 ---
 
-## Funcionalidades atuais
+## Funcionalidades
 
 ### Backend
 
@@ -121,6 +163,7 @@ A interface permite:
   - atrasadas;
   - hoje;
   - próximas;
+  - futuras;
   - sem prazo;
 - visualizar tarefas agrupadas por:
   - atrasadas;
@@ -167,7 +210,7 @@ Cada tarefa possui os seguintes campos:
 
 ---
 
-## Arquitetura atual
+## Arquitetura
 
 ### Backend
 
@@ -210,6 +253,22 @@ Responsável pelo acesso aos dados no MongoDB Atlas, incluindo:
 - exclusão;
 - tratamento de IDs inválidos.
 
+#### Interface de repositório
+
+Para permitir testes automatizados sem depender do MongoDB real, foi criada a interface `ITaskRepository`.
+
+Fluxo em produção:
+
+```text
+TaskService → ITaskRepository → TaskRepository → MongoDB Atlas
+```
+
+Fluxo nos testes:
+
+```text
+TaskService → ITaskRepository → FakeTaskRepository
+```
+
 ### Frontend
 
 O frontend foi organizado em componentes:
@@ -225,7 +284,7 @@ App.jsx
     └── TaskCard
 ```
 
-O `App.jsx` concentra os estados principais, chamadas aos services e funções de manipulação. Os componentes cuidam da renderização visual e recebem dados/funções por props.
+O `App.jsx` concentra os estados principais, chamadas aos services, filtros e funções de manipulação. Os componentes cuidam da renderização visual e recebem dados/funções por props.
 
 ---
 
@@ -234,14 +293,19 @@ O `App.jsx` concentra os estados principais, chamadas aos services e funções d
 - A API foi organizada em camadas para separar responsabilidades entre Controller, Service e Repository.
 - Foram utilizados DTOs para controlar os dados recebidos nas requisições de criação e atualização, evitando expor diretamente o model da aplicação.
 - O MongoDB Atlas foi escolhido para praticar persistência NoSQL em ambiente de nuvem.
-- O User Secrets foi utilizado para evitar que dados sensíveis fossem salvos no repositório.
+- O User Secrets foi utilizado para evitar que dados sensíveis fossem salvos no repositório durante o desenvolvimento local.
 - O Scalar foi adotado para facilitar a visualização e o teste dos endpoints durante o desenvolvimento.
 - O frontend foi criado com React + Vite para manter o projeto leve, rápido e adequado ao aprendizado gradual.
-- A URL da API no frontend foi configurada via `.env`, usando `VITE_API_BASE_URL`.
+- A URL da API no frontend foi configurada via variável de ambiente `VITE_API_BASE_URL`.
 - O layout foi refatorado em componentes para reduzir a complexidade do `App.jsx`.
 - Os filtros e agrupamentos foram feitos inicialmente no frontend para manter a API simples nesta fase do projeto.
 - Tarefas concluídas não exibem botão de edição, preservando a ideia de registro finalizado.
 - O campo `dueDate` é opcional, permitindo tarefas com ou sem prazo.
+- O backend foi dockerizado para facilitar execução local e deploy.
+- O frontend também possui Dockerfile com Nginx para simular uma entrega de produção em ambiente local/containerizado.
+- O Docker Compose foi usado para rodar backend e frontend juntos localmente.
+- O deploy foi realizado no Render, com backend como Web Service e frontend como Static Site.
+- 
 
 ---
 
@@ -252,26 +316,35 @@ taskflow/
 ├── backend/
 │   └── TaskFlow/
 │       ├── TaskFlow.slnx
-│       └── TaskFlow.Api/
-│           ├── Controllers/
-│           │   └── TasksController.cs
-│           ├── DTOs/
-│           │   ├── CreateTaskDto.cs
-│           │   └── UpdateTaskDto.cs
-│           ├── Models/
-│           │   └── TaskItem.cs
-│           ├── Repositories/
-│           │   └── TaskRepository.cs
-│           ├── Services/
-│           │   └── TaskService.cs
-│           ├── Settings/
-│           │   └── MongoDbSettings.cs
-│           ├── Properties/
-│           │   └── launchSettings.json
-│           ├── Program.cs
-│           ├── appsettings.json
-│           ├── appsettings.Development.json
-│           └── TaskFlow.Api.http
+│       ├── TaskFlow.Api/
+│       │   ├── Controllers/
+│       │   │   └── TasksController.cs
+│       │   ├── DTOs/
+│       │   │   ├── CreateTaskDto.cs
+│       │   │   └── UpdateTaskDto.cs
+│       │   ├── Models/
+│       │   │   └── TaskItem.cs
+│       │   ├── Repositories/
+│       │   │   ├── ITaskRepository.cs
+│       │   │   └── TaskRepository.cs
+│       │   ├── Services/
+│       │   │   └── TaskService.cs
+│       │   ├── Settings/
+│       │   │   └── MongoDbSettings.cs
+│       │   ├── Properties/
+│       │   │   └── launchSettings.json
+│       │   ├── Dockerfile
+│       │   ├── Program.cs
+│       │   ├── appsettings.json
+│       │   ├── appsettings.Development.json
+│       │   ├── TaskFlow.Api.csproj
+│       │   └── TaskFlow.Api.http
+│       └── TaskFlow.Tests/
+│           ├── Fakes/
+│           │   └── FakeTaskRepository.cs
+│           ├── SmokeTests.cs
+│           ├── TaskServiceTests.cs
+│           └── TaskFlow.Tests.csproj
 ├── frontend/
 │   ├── public/
 │   │   └── assets/
@@ -290,6 +363,8 @@ taskflow/
 │   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
+│   ├── Dockerfile
+│   ├── nginx.conf
 │   ├── .env.example
 │   ├── index.html
 │   ├── package.json
@@ -297,6 +372,16 @@ taskflow/
 │   └── vite.config.js
 ├── docs/
 │   └── prints/
+│       ├── extras/
+│       ├── 01-home-dashboard.png
+│       ├── 02-criar-tarefa.png
+│       ├── 03-tarefas-agrupadas.png
+│       ├── 04-filtros.png
+│       ├── 05-busca.png
+│       ├── 06-editar-tarefa.png
+│       └── 07-api-render.png
+├── docker-compose.yml
+├── .env.example
 ├── README.md
 └── .gitignore
 ```
@@ -311,6 +396,12 @@ Base local da API:
 https://localhost:7064
 ```
 
+Base publicada:
+
+```text
+https://taskflow-api-jkpb.onrender.com
+```
+
 ### Listar tarefas
 
 ```http
@@ -318,8 +409,6 @@ GET /api/tasks
 ```
 
 Retorna todas as tarefas cadastradas.
-
----
 
 ### Buscar tarefa por ID
 
@@ -335,8 +424,6 @@ Possíveis respostas:
 |---|---|
 | `200 OK` | Tarefa encontrada |
 | `404 Not Found` | Tarefa não encontrada ou ID inválido |
-
----
 
 ### Criar tarefa
 
@@ -361,8 +448,6 @@ Possíveis respostas:
 |---|---|
 | `201 Created` | Tarefa criada com sucesso |
 | `400 Bad Request` | Dados inválidos |
-
----
 
 ### Atualizar tarefa
 
@@ -399,8 +484,6 @@ Possíveis respostas:
 | `400 Bad Request` | Dados inválidos |
 | `404 Not Found` | Tarefa não encontrada ou ID inválido |
 
----
-
 ### Concluir tarefa
 
 ```http
@@ -415,8 +498,6 @@ Possíveis respostas:
 |---|---|
 | `200 OK` | Tarefa concluída com sucesso |
 | `404 Not Found` | Tarefa não encontrada ou ID inválido |
-
----
 
 ### Excluir tarefa
 
@@ -515,10 +596,22 @@ Arquivo esperado:
 frontend/.env
 ```
 
-Exemplo:
+Exemplo para desenvolvimento local com API em HTTPS:
 
 ```env
 VITE_API_BASE_URL=https://localhost:7064
+```
+
+Exemplo para Docker local:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+Exemplo em produção:
+
+```env
+VITE_API_BASE_URL=https://taskflow-api-jkpb.onrender.com
 ```
 
 Também existe o arquivo de exemplo:
@@ -625,11 +718,51 @@ Essa pasta não deve ser versionada no Git.
 
 ---
 
+## Docker
+
+O projeto possui Dockerfile para backend e frontend, além de `docker-compose.yml` na raiz.
+
+### Variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
+
+```env
+MONGODB_CONNECTION_STRING=mongodb+srv://USUARIO:SENHA@cluster0.xxxxx.mongodb.net/taskflow_db?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_DATABASE_NAME=taskflow_db
+MONGODB_TASKS_COLLECTION_NAME=tasks
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+O arquivo `.env` real não deve ser versionado.
+
+### Subir backend e frontend com Docker Compose
+
+Na raiz do projeto:
+
+```powershell
+docker compose up --build
+```
+
+Acesse:
+
+```text
+Backend: http://localhost:8080/api/tasks
+Frontend: http://localhost:3000
+```
+
+Para parar os containers:
+
+```powershell
+docker compose down
+```
+
+---
+
 ## Documentação da API
 
-A API possui documentação visual com Scalar.
+A API possui documentação visual com Scalar em ambiente de desenvolvimento.
 
-Com a aplicação rodando, acesse:
+Com a aplicação rodando localmente, acesse:
 
 ```text
 https://localhost:7064/scalar
@@ -640,6 +773,8 @@ Também é possível acessar o documento OpenAPI em:
 ```text
 https://localhost:7064/openapi/v1.json
 ```
+
+No Docker e no Render, o Scalar pode não estar disponível se a aplicação estiver rodando como `Production`.
 
 ---
 
@@ -677,8 +812,115 @@ Além disso, os fluxos do frontend foram testados manualmente:
 - filtros;
 - agrupamento por prazo;
 - ordenação por prazo e prioridade;
-- build de produção com `npm run build`.
+- build de produção com `npm run build`;
+- funcionamento do frontend publicado no Render;
+- consumo da API publicada pelo frontend publicado.
 
+---
+
+## Testes automatizados
+
+O backend possui testes automatizados com xUnit.
+
+Para executar:
+
+```powershell
+cd backend/TaskFlow
+
+dotnet test
+```
+
+Os testes cobrem:
+
+- execução básica do projeto de testes;
+- criação de tarefa;
+- criação com prioridade padrão;
+- criação sem data de vencimento;
+- persistência no repositório fake;
+- atualização de tarefa;
+- preservação de dados antigos;
+- atualização de tarefa inexistente;
+- conclusão de tarefa;
+- conclusão de tarefa inexistente;
+- exclusão de tarefa;
+- exclusão de tarefa inexistente.
+
+A estrutura de testes utiliza um `FakeTaskRepository`, evitando dependência direta do MongoDB durante os testes de regra de negócio.
+
+---
+
+## Deploy
+
+### Backend
+
+O backend foi publicado no Render como Web Service usando Docker.
+
+Configurações principais:
+
+```text
+Runtime: Docker
+Root Directory: backend/TaskFlow/TaskFlow.Api
+Branch: main
+PORT: 10000
+ASPNETCORE_URLS: http://+:10000
+ASPNETCORE_ENVIRONMENT: Production
+```
+
+Variáveis de ambiente utilizadas no Render:
+
+```text
+MongoDbSettings__ConnectionString
+MongoDbSettings__DatabaseName
+MongoDbSettings__TasksCollectionName
+ASPNETCORE_ENVIRONMENT
+ASPNETCORE_URLS
+PORT
+```
+
+Endpoint publicado:
+
+```text
+https://taskflow-api-jkpb.onrender.com/api/tasks
+```
+
+### Frontend
+
+O frontend foi publicado no Render como Static Site.
+
+Configurações principais:
+
+```text
+Root Directory: frontend
+Branch: main
+Build Command: npm install && npm run build
+Publish Directory: dist
+```
+
+Variável de ambiente utilizada no Render:
+
+```text
+VITE_API_BASE_URL=https://taskflow-api-jkpb.onrender.com
+```
+
+Site publicado:
+
+```text
+https://taskflow-web-e6fr.onrender.com
+```
+
+---
+
+## CORS
+
+Para permitir a comunicação entre frontend e backend, o backend possui política de CORS configurada no `Program.cs`.
+
+Origens liberadas:
+
+```text
+http://localhost:5173
+http://localhost:3000
+https://taskflow-web-e6fr.onrender.com
+```
 ---
 
 ## Segurança
@@ -687,13 +929,34 @@ A connection string do MongoDB não é salva no repositório.
 
 Ela deve ser configurada localmente usando User Secrets durante o desenvolvimento.
 
-Em ambiente de deploy, a connection string deverá ser configurada por variável de ambiente.
+Em ambiente de deploy, a connection string deve ser configurada por variável de ambiente.
 
 O frontend também utiliza variável de ambiente para configurar a URL da API.
 
+Cuidados aplicados:
+
+- `.env` real não versionado;
+- uso de `.env.example`;
+- uso de User Secrets em desenvolvimento;
+- uso de variáveis de ambiente no Render;
+- senha real do MongoDB fora do código-fonte.
+
 ---
 
-## Roadmap
+## Desafios técnicos resolvidos
+
+Durante o desenvolvimento e deploy, foram tratados pontos importantes:
+
+- configuração segura da connection string com User Secrets e variáveis de ambiente;
+- integração entre frontend e backend usando `VITE_API_BASE_URL`;
+- ajuste de CORS em ambiente local e produção;
+- configuração de porta no Render com `PORT` e `ASPNETCORE_URLS`;
+- dockerização do backend e frontend;
+- desacoplamento do `TaskService` com `ITaskRepository` para permitir testes automatizados.
+
+---
+
+## Roadmap concluído
 
 ### Backend
 
@@ -703,13 +966,15 @@ O frontend também utiliza variável de ambiente para configurar a URL da API.
 - [x] Criar controller de tarefas
 - [x] Criar service
 - [x] Criar repository
+- [x] Criar interface `ITaskRepository`
 - [x] Integrar com MongoDB Atlas
 - [x] Implementar CRUD persistente
 - [x] Adicionar validações
 - [x] Adicionar campo de vencimento
-- [x] Adicionar Scalar
-- [ ] Melhorar tratamento global de erros
-- [ ] Criar testes automatizados
+- [x] Adicionar Scalar em ambiente Development
+- [x] Criar testes automatizados
+- [x] Dockerizar backend
+- [x] Publicar backend no Render
 
 ### Frontend
 
@@ -725,20 +990,24 @@ O frontend também utiliza variável de ambiente para configurar a URL da API.
 - [x] Adicionar indicadores visuais de prazo
 - [x] Adicionar busca
 - [x] Adicionar filtros rápidos
+- [x] Adicionar filtro de tarefas futuras
 - [x] Agrupar tarefas por prazo
 - [x] Ordenar tarefas por prazo e prioridade
 - [x] Modernizar interface visual
 - [x] Validar build de produção
+- [x] Dockerizar frontend
+- [x] Publicar frontend no Render
 
-### Infraestrutura
+### Infraestrutura e documentação
 
-- [ ] Criar testes automatizados
-- [ ] Dockerizar backend
-- [ ] Dockerizar frontend
-- [ ] Configurar deploy do backend
-- [ ] Configurar deploy do frontend
-- [ ] Atualizar README final com links publicados
-- [ ] Adicionar prints finais em `docs/prints`
+- [x] Criar testes automatizados
+- [x] Dockerizar backend
+- [x] Dockerizar frontend
+- [x] Criar Docker Compose
+- [x] Configurar deploy do backend
+- [x] Configurar deploy do frontend
+- [x] Atualizar README final com links publicados
+- [x] Adicionar prints finais em `docs/prints`
 
 ---
 
@@ -747,52 +1016,39 @@ O frontend também utiliza variável de ambiente para configurar a URL da API.
 Possíveis evoluções para próximas versões:
 
 - autenticação de usuários;
+- tarefas por usuário;
 - categorias personalizadas;
+- tags;
 - calendário semanal ou mensal;
 - notificações de vencimento;
 - botão para reabrir tarefa concluída;
 - dashboard com métricas avançadas;
 - filtros persistidos na URL;
 - paginação ou carregamento incremental;
-- testes automatizados de backend;
 - testes automatizados de frontend;
-- Docker Compose para ambiente completo;
-- deploy backend;
-- deploy frontend;
-- README final com prints, links publicados e instruções de produção.
+- tratamento global de erros no backend;
+- logs estruturados;
+- CI/CD com GitHub Actions;
+- ambiente MongoDB local no Docker Compose;
+- exportação de tarefas;
+- modo escuro;
+- responsividade mobile mais refinada.
 
 ---
 
 ## Aprendizados aplicados
 
-Neste projeto foram praticados conceitos como:
-
-- criação de API REST com ASP.NET Core;
-- uso de controllers;
-- separação entre Model, DTO, Service e Repository;
-- persistência com MongoDB Atlas;
-- configuração segura com User Secrets;
-- validações com DataAnnotations;
-- documentação com Scalar;
-- consumo de API no React;
-- organização de frontend em componentes;
-- uso de variáveis de ambiente no Vite;
-- manipulação de estado no React;
-- criação de filtros e busca no frontend;
-- agrupamento e ordenação de listas;
-- tratamento de datas no frontend;
-- estilização moderna com CSS;
-- uso de assets visuais;
-- versionamento com Git e GitHub.
+Neste projeto foram praticados conceitos como criação de APIs REST com ASP.NET Core, separação em camadas, uso de DTOs, persistência com MongoDB Atlas, testes automatizados com xUnit, consumo de API no React, organização de componentes, Docker, Docker Compose, CORS, variáveis de ambiente e deploy no Render.
 
 ---
 
-## Status atual
+## Status final
 
-O TaskFlow possui backend funcional, frontend integrado, CRUD completo, persistência em MongoDB Atlas, layout moderno e recursos de organização por prazo.
-
-A próxima fase será focada em qualidade e publicação:
+A aplicação está publicada e acessível pelo Render:
 
 ```text
-testes automatizados → Docker → deploy backend → deploy frontend → README final
+Frontend: https://taskflow-web-e6fr.onrender.com
+Backend: https://taskflow-api-jkpb.onrender.com/api/tasks
 ```
+
+Este projeto representa a primeira entrega da trilha prática de projetos para portfólio.
