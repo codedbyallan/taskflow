@@ -9,6 +9,7 @@ function TaskList({
   editTitle,
   editDescription,
   editPriority,
+  editDueDate,
   editError,
   taskActionId,
   onStartEdit,
@@ -19,6 +20,7 @@ function TaskList({
   onEditTitleChange,
   onEditDescriptionChange,
   onEditPriorityChange,
+  onEditDueDateChange,
 }) {
   if (isLoading) {
     return <p className="state-message">Carregando tarefas...</p>;
@@ -51,6 +53,7 @@ function TaskList({
           editTitle={editTitle}
           editDescription={editDescription}
           editPriority={editPriority}
+          editDueDate={editDueDate}
           editError={editError}
           taskActionId={taskActionId}
           onStartEdit={onStartEdit}
@@ -61,6 +64,7 @@ function TaskList({
           onEditTitleChange={onEditTitleChange}
           onEditDescriptionChange={onEditDescriptionChange}
           onEditPriorityChange={onEditPriorityChange}
+          onEditDueDateChange={onEditDueDateChange}
         />
       ))}
     </div>

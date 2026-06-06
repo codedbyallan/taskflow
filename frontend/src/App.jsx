@@ -21,6 +21,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [dueDate, setDueDate] = useState("");
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [taskActionId, setTaskActionId] = useState("");
@@ -28,6 +29,7 @@ function App() {
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editPriority, setEditPriority] = useState("medium");
+  const [editDueDate, setEditDueDate] = useState("");
   const [editError, setEditError] = useState("");
 
   useEffect(() => {
@@ -68,6 +70,7 @@ function App() {
         title: title.trim(),
         description: description.trim(),
         priority,
+        dueDate: dueDate || null,
       });
 
       const updatedTasks = await getTasks();
@@ -76,6 +79,7 @@ function App() {
       setTitle("");
       setDescription("");
       setPriority("medium");
+      setDueDate("");
       setShowForm(false);
     } catch (error) {
       setFormError("Não foi possível criar a tarefa.");
@@ -125,10 +129,16 @@ function App() {
   }
 
   function handleStartEdit(task) {
+    const taskDueDate = task.dueDate || task.DueDate || "";
+    const formattedDueDate = taskDueDate.includes("T")
+      ? taskDueDate.split("T")[0]
+      : taskDueDate;
+
     setEditingTaskId(task.id);
     setEditTitle(task.title);
     setEditDescription(task.description || "");
     setEditPriority(task.priority);
+    setEditDueDate(formattedDueDate);
     setEditError("");
   }
 
@@ -137,6 +147,7 @@ function App() {
     setEditTitle("");
     setEditDescription("");
     setEditPriority("medium");
+    setEditDueDate("");
     setEditError("");
   }
 
@@ -157,6 +168,7 @@ function App() {
         title: editTitle.trim(),
         description: editDescription.trim(),
         priority: editPriority,
+        dueDate: editDueDate || null,
       });
 
       const updatedTasks = await getTasks();
@@ -199,11 +211,13 @@ function App() {
               title={title}
               description={description}
               priority={priority}
+              dueDate={dueDate}
               formError={formError}
               isSubmitting={isSubmitting}
               onTitleChange={setTitle}
               onDescriptionChange={setDescription}
               onPriorityChange={setPriority}
+              onDueDateChange={setDueDate}
               onSubmit={handleCreateTask}
             />
           )}
@@ -216,6 +230,7 @@ function App() {
             editTitle={editTitle}
             editDescription={editDescription}
             editPriority={editPriority}
+            editDueDate={editDueDate}
             editError={editError}
             taskActionId={taskActionId}
             onStartEdit={handleStartEdit}
@@ -226,6 +241,7 @@ function App() {
             onEditTitleChange={setEditTitle}
             onEditDescriptionChange={setEditDescription}
             onEditPriorityChange={setEditPriority}
+            onEditDueDateChange={setEditDueDate}
           />
         </section>
       </main>

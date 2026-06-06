@@ -4,6 +4,7 @@ function TaskCard({
   editTitle,
   editDescription,
   editPriority,
+  editDueDate,
   editError,
   taskActionId,
   onStartEdit,
@@ -14,11 +15,23 @@ function TaskCard({
   onEditTitleChange,
   onEditDescriptionChange,
   onEditPriorityChange,
+  onEditDueDateChange,
 }) {
   const isEditing = editingTaskId === task.id;
   const isCompleted = task.status === "completed";
   const badgeClassName = isCompleted ? "completed" : task.priority;
   const badgeText = isCompleted ? "completed" : task.priority;
+
+  function formatDueDate(dateValue) {
+    if (!dateValue) {
+      return "";
+    }
+
+    const dateOnly = dateValue.split("T")[0];
+    const [year, month, day] = dateOnly.split("-");
+
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <article className={`task-card ${isCompleted ? "completed" : ""}`}>
@@ -57,6 +70,15 @@ function TaskCard({
             </select>
           </label>
 
+          <label>
+            Vencimento
+            <input
+              type="date"
+              value={editDueDate}
+              onChange={(event) => onEditDueDateChange(event.target.value)}
+            />
+          </label>
+
           {editError && <p className="form-error">{editError}</p>}
 
           <div className="inline-edit-actions">
@@ -81,6 +103,12 @@ function TaskCard({
         <div>
           <h3>{task.title}</h3>
           <p>{task.description || "Sem descrição cadastrada."}</p>
+
+          {task.dueDate && (
+            <small className="task-due-date">
+              Vence em {formatDueDate(task.dueDate)}
+            </small>
+          )}
         </div>
       )}
 
