@@ -21,6 +21,7 @@ function TaskCard({
   const isCompleted = task.status === "completed";
   const badgeClassName = isCompleted ? "completed" : task.priority;
   const badgeText = isCompleted ? "completed" : task.priority;
+  const dueDateInfo = getDueDateInfo(task.dueDate);
 
   function formatDueDate(dateValue) {
     if (!dateValue) {
@@ -31,6 +32,64 @@ function TaskCard({
     const [year, month, day] = dateOnly.split("-");
 
     return `${day}/${month}/${year}`;
+  }
+
+  function getDueDateInfo(dateValue) {
+    if (!dateValue) {
+      return null;
+    }
+
+    const dateOnly = dateValue.split("T")[0];
+    const [year, month, day] = dateOnly.split("-").map(Number);
+
+    const dueDate = new Date(year, month - 1, day);
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+    dueDate.setHours(0, 0, 0, 0);
+
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+    if (isCompleted) {
+      return {
+        text: `Concluída - prazo ${formatDueDate(dateValue)}`,
+        className: "completed-date",
+      };
+    }
+
+    if (diffDays < 0) {
+      return {
+        text: `Atrasada desde ${formatDueDate(dateValue)}`,
+        className: "overdue-date",
+      };
+    }
+
+    if (diffDays === 0) {
+      return {
+        text: "Vence hoje",
+        className: "today-date",
+      };
+    }
+
+    if (diffDays === 1) {
+      return {
+        text: "Vence amanhã",
+        className: "soon-date",
+      };
+    }
+
+    if (diffDays <= 7) {
+      return {
+        text: `Vence em ${diffDays} dias`,
+        className: "soon-date",
+      };
+    }
+
+    return {
+      text: `Vence em ${formatDueDate(dateValue)}`,
+      className: "default-date",
+    };
   }
 
   return (
@@ -104,9 +163,9 @@ function TaskCard({
           <h3>{task.title}</h3>
           <p>{task.description || "Sem descrição cadastrada."}</p>
 
-          {task.dueDate && (
-            <small className="task-due-date">
-              Vence em {formatDueDate(task.dueDate)}
+          {dueDateInfo && (
+            <small className={`task-due-date ${dueDateInfo.className}`}>
+              {dueDateInfo.text}
             </small>
           )}
         </div>
