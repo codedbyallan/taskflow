@@ -74,7 +74,7 @@ function TaskCard({
             Vencimento
             <input
               type="date"
-              value={editDueDate}
+              value={editDueDate || ""}
               onChange={(event) => onEditDueDateChange(event.target.value)}
             />
           </label>
