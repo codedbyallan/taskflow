@@ -1,0 +1,13 @@
+services:
+  taskflow-api:
+    build:
+      context: ./backend/TaskFlow/TaskFlow.Api
+      dockerfile: Dockerfile
+    container_name: taskflow-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      MongoDbSettings__ConnectionString: ${MONGODB_CONNECTION_STRING}
+      MongoDbSettings__DatabaseName: ${MONGODB_DATABASE_NAME}
+      MongoDbSettings__TasksCollectionName: ${MONGODB_TASKS_COLLECTION_NAME}
