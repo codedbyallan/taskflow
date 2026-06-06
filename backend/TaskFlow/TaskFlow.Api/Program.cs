@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
             .WithOrigins(
             "http://localhost:5173",
             "http://localhost:3000",
-            "https://taskflow-web-e6rf.onrender.com/"
+            "https://taskflow-web-e6rf.onrender.com"
             )
 
             .AllowAnyHeader()
