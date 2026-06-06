@@ -231,5 +231,42 @@ namespace TaskFlow.Tests
 
             Assert.Null(result);
         }
+
+        [Fact]
+        public void Delete_Should_Remove_Task_When_Task_Exists()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var existingTask = new TaskItem
+            {
+                Id = "1",
+                Title = "Tarefa para excluir",
+                Description = "Essa tarefa será removida",
+                Priority = "medium",
+                Status = "pending",
+                CreatedAt = new DateTime(2026, 6, 1),
+                UpdatedAt = new DateTime(2026, 6, 1)
+            };
+
+            repository.Add(existingTask);
+
+            var result = service.Delete("1");
+            var tasks = repository.GetAll();
+
+            Assert.True(result);
+            Assert.Empty(tasks);
+        }
+
+        [Fact]
+        public void Delete_Should_Return_False_When_Task_Does_Not_Exist()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var result = service.Delete("999");
+
+            Assert.False(result);
+        }
     }
 }
