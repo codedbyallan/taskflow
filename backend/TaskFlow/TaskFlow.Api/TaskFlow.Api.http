@@ -67,7 +67,7 @@ Content-Type: application/json
 }
 
 ### Buscar tarefa por ID existente
-GET https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+GET https://localhost:7064/api/tasks/6a2454056a6fd63912a22c7e
 Accept: application/json
 
 ###
@@ -85,7 +85,7 @@ Accept: application/json
 ###
 
 ### Atualizar tarefa existente - dados válidos
-PUT https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+PUT https://localhost:7064/api/tasks/6a2454056a6fd63912a22c7e
 Content-Type: application/json
 
 {
@@ -97,7 +97,7 @@ Content-Type: application/json
 ###
 
 ### Atualizar tarefa existente - apenas prioridade
-PUT https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+PUT https://localhost:7064/api/tasks/6a2454056a6fd63912a22c7e
 Content-Type: application/json
 
 {
@@ -107,7 +107,7 @@ Content-Type: application/json
 ###
 
 ### Atualizar tarefa inválida - título curto
-PUT https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
+PUT https://localhost:7064/api/tasks/6a2454056a6fd63912a22c7e
 Content-Type: application/json
 
 {
@@ -141,7 +141,7 @@ Content-Type: application/json
 ###
 
 ### Concluir tarefa existente
-PATCH https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI/complete
+PATCH https://localhost:7064/api/tasks/6a2454056a6fd63912a22c7e/complete
 Accept: application/json
 
 ###
@@ -159,7 +159,7 @@ Accept: application/json
 ###
 
 ### Excluir tarefa existente
-DELETE https://localhost:7064/api/tasks/6a20eed0292a78c25bad48cf
+DELETE https://localhost:7064/api/tasks/6a2454056a6fd63912a22c7e
 
 ###
 

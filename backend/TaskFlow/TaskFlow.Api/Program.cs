@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 
-builder.Services.AddSingleton<TaskRepository>();
+builder.Services.AddSingleton<ITaskRepository, TaskRepository>();
 builder.Services.AddSingleton<TaskService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

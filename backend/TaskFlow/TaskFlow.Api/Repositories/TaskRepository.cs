@@ -6,7 +6,7 @@ using TaskFlow.Api.Settings;
 
 namespace TaskFlow.Api.Repositories
 {
-    public class TaskRepository
+    public class TaskRepository : ITaskRepository
     {
         private readonly IMongoCollection<TaskItem> _tasksCollection;
         public TaskRepository(IOptions<MongoDbSettings> mongoDbSettings)

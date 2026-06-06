@@ -7,8 +7,8 @@ namespace TaskFlow.Api.Services
 {
     public class TaskService
     {
-        private readonly TaskRepository _taskRepository;
-        public TaskService(TaskRepository taskRepository)
+        private readonly ITaskRepository _taskRepository;
+        public TaskService(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
         }
