@@ -191,5 +191,45 @@ namespace TaskFlow.Tests
 
             Assert.Null(result);
         }
+
+        [Fact]
+        public void Complete_Should_Set_Status_To_Completed()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var existingTask = new TaskItem
+            {
+                Id = "1",
+                Title = "Tarefa pendente",
+                Description = "Tarefa que será concluída",
+                Priority = "medium",
+                Status = "pending",
+                CreatedAt = new DateTime(2026, 6, 1),
+                UpdatedAt = new DateTime(2026, 6, 1)
+            };
+
+            repository.Add(existingTask);
+
+            var result = service.Complete("1");
+
+            Assert.NotNull(result);
+            Assert.Equal("completed", result!.Status);
+            Assert.Equal("Tarefa pendente", result.Title);
+            Assert.Equal("medium", result.Priority);
+            Assert.Equal(new DateTime(2026, 6, 1), result.CreatedAt);
+            Assert.True(result.UpdatedAt > existingTask.UpdatedAt);
+        }
+
+        [Fact]
+        public void Complete_Should_Return_Null_When_Task_Does_Not_Exist()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var result = service.Complete("999");
+
+            Assert.Null(result);
+        }
     }
 }
