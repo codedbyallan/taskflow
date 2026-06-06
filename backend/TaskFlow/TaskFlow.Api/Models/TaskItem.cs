@@ -12,6 +12,7 @@ namespace TaskFlow.Api.Models
         public string? Description { get; set; }
         public string Status { get; set; } = "pending";
         public string Priority { get; set; } = "medium";
+        public DateTime? DueDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

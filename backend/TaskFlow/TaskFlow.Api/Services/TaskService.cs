@@ -33,6 +33,7 @@ namespace TaskFlow.Api.Services
                 Title = dto.Title,
                 Description = dto.Description,
                 Priority = string.IsNullOrWhiteSpace(dto.Priority) ? "medium" : dto.Priority,
+                DueDate = dto.DueDate,
                 Status = "pending",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
@@ -56,6 +57,7 @@ namespace TaskFlow.Api.Services
                 Title = string.IsNullOrWhiteSpace(dto.Title) ? existingTask.Title : dto.Title,
                 Description = string.IsNullOrWhiteSpace(dto.Description) ? existingTask.Description : dto.Description,
                 Priority = string.IsNullOrWhiteSpace(dto.Priority) ? existingTask.Priority : dto.Priority,
+                DueDate = dto.DueDate ?? existingTask.DueDate,
                 Status = existingTask.Status,
                 CreatedAt = existingTask.CreatedAt,
                 UpdatedAt = DateTime.UtcNow

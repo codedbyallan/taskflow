@@ -55,6 +55,17 @@ Content-Type: application/json
 
 ###
 
+### Criar tarefa com data de vencimento
+POST https://localhost:7064/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Estudar data de vencimento",
+  "description": "Testando campo dueDate no backend",
+  "priority": "high",
+  "dueDate": "2026-06-10"
+}
+
 ### Buscar tarefa por ID existente
 GET https://localhost:7064/api/tasks/COLE_UM_ID_REAL_AQUI
 Accept: application/json
