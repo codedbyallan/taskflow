@@ -19,7 +19,7 @@ import {
             <LayoutGrid size={22} />
           </button>
   
-          <button className="sidebar-item" title="Tarefas">
+          <button className="sidebar-item locked" title="Tarefas">
             <CheckSquare size={22} />
           </button>
   
