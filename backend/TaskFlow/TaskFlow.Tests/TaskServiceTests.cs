@@ -1,4 +1,5 @@
 ﻿using TaskFlow.Api.DTOs;
+using TaskFlow.Api.Models;
 using TaskFlow.Api.Services;
 using TaskFlow.Tests.Fakes;
 
@@ -88,9 +89,107 @@ namespace TaskFlow.Tests
             var result = service.Create(dto);
             var tasks = repository.GetAll();
 
+            Assert.NotNull(result);
             Assert.Single(tasks);
-            Assert.Equal(result.Id, tasks[0].Id);
+            Assert.Equal(result!.Id, tasks[0].Id);
             Assert.Equal("Tarefa persistida no fake", tasks[0].Title);
+        }
+
+        [Fact]
+        public void Update_Should_Update_Task_Fields()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var existingTask = new TaskItem
+            {
+                Id = "1",
+                Title = "Título antigo",
+                Description = "Descrição antiga",
+                Priority = "low",
+                Status = "pending",
+                DueDate = new DateTime(2026, 6, 10),
+                CreatedAt = new DateTime(2026, 6, 1),
+                UpdatedAt = new DateTime(2026, 6, 1)
+            };
+
+            repository.Add(existingTask);
+
+            var dto = new UpdateTaskDto
+            {
+                Title = "Título atualizado",
+                Description = "Descrição atualizada",
+                Priority = "high",
+                DueDate = new DateTime(2026, 6, 20)
+            };
+
+            var result = service.Update("1", dto);
+
+            Assert.NotNull(result);
+            Assert.Equal("Título atualizado", result.Title);
+            Assert.Equal("Descrição atualizada", result.Description);
+            Assert.Equal("high", result.Priority);
+            Assert.Equal(new DateTime(2026, 6, 20), result.DueDate);
+            Assert.Equal("pending", result.Status);
+            Assert.Equal(new DateTime(2026, 6, 1), result.CreatedAt);
+            Assert.True(result.UpdatedAt > existingTask.UpdatedAt);
+        }
+
+        [Fact]
+        public void Update_Should_Keep_Existing_Values_When_Fields_Are_Empty()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var existingTask = new TaskItem
+            {
+                Id = "1",
+                Title = "Título original",
+                Description = "Descrição original",
+                Priority = "medium",
+                Status = "pending",
+                DueDate = new DateTime(2026, 6, 10),
+                CreatedAt = new DateTime(2026, 6, 1),
+                UpdatedAt = new DateTime(2026, 6, 1)
+            };
+
+            repository.Add(existingTask);
+
+            var dto = new UpdateTaskDto
+            {
+                Title = "",
+                Description = "",
+                Priority = "",
+                DueDate = null
+            };
+
+            var result = service.Update("1", dto);
+
+            Assert.NotNull(result);
+            Assert.Equal("Título original", result.Title);
+            Assert.Equal("Descrição original", result.Description);
+            Assert.Equal("medium", result.Priority);
+            Assert.Equal(new DateTime(2026, 6, 10), result.DueDate);
+            Assert.Equal("pending", result.Status);
+        }
+
+        [Fact]
+        public void Update_Should_Return_Null_When_Task_Does_Not_Exist()
+        {
+            var repository = new FakeTaskRepository();
+            var service = new TaskService(repository);
+
+            var dto = new UpdateTaskDto
+            {
+                Title = "Tentativa de atualização",
+                Description = "Essa tarefa não existe",
+                Priority = "high",
+                DueDate = new DateTime(2026, 6, 20)
+            };
+
+            var result = service.Update("999", dto);
+
+            Assert.Null(result);
         }
     }
 }
