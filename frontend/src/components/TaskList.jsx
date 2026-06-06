@@ -77,6 +77,36 @@ function TaskList({
     return "future";
   }
 
+  function getPriorityWeight(priority) {
+    const priorityWeights = {
+      high: 1,
+      medium: 2,
+      low: 3,
+    };
+
+    return priorityWeights[priority] || 4;
+  }
+
+  function sortTasksByRelevance(tasksToSort) {
+    return [...tasksToSort].sort((firstTask, secondTask) => {
+      const firstDate = parseTaskDate(firstTask.dueDate);
+      const secondDate = parseTaskDate(secondTask.dueDate);
+
+      if (firstDate && secondDate) {
+        const dateComparison = firstDate.getTime() - secondDate.getTime();
+
+        if (dateComparison !== 0) {
+          return dateComparison;
+        }
+      }
+
+      return (
+        getPriorityWeight(firstTask.priority) -
+        getPriorityWeight(secondTask.priority)
+      );
+    });
+  }
+
   const groupedTasks = {
     overdue: [],
     today: [],
@@ -96,37 +126,37 @@ function TaskList({
       key: "overdue",
       title: "Atrasadas",
       description: "Tarefas que já passaram do prazo.",
-      tasks: groupedTasks.overdue,
+      tasks: sortTasksByRelevance(groupedTasks.overdue),
     },
     {
       key: "today",
       title: "Hoje",
       description: "Tarefas que vencem hoje.",
-      tasks: groupedTasks.today,
+      tasks: sortTasksByRelevance(groupedTasks.today),
     },
     {
       key: "upcoming",
       title: "Próximas",
       description: "Tarefas com vencimento nos próximos 7 dias.",
-      tasks: groupedTasks.upcoming,
+      tasks: sortTasksByRelevance(groupedTasks.upcoming),
     },
     {
       key: "future",
       title: "Futuras",
       description: "Tarefas com vencimento mais distante.",
-      tasks: groupedTasks.future,
+      tasks: sortTasksByRelevance(groupedTasks.future),
     },
     {
       key: "noDate",
       title: "Sem prazo",
       description: "Tarefas ainda sem data de vencimento.",
-      tasks: groupedTasks.noDate,
+      tasks: sortTasksByRelevance(groupedTasks.noDate),
     },
     {
       key: "completed",
       title: "Concluídas",
       description: "Tarefas finalizadas.",
-      tasks: groupedTasks.completed,
+      tasks: sortTasksByRelevance(groupedTasks.completed),
     },
   ];
 
