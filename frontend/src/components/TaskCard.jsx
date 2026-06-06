@@ -93,7 +93,11 @@ function TaskCard({
   }
 
   return (
-    <article className={`task-card ${isCompleted ? "completed" : ""}`}>
+    <article
+      className={`task-card priority-${task.priority} ${
+        isCompleted ? "completed" : ""
+      }`}
+    >
       {isEditing ? (
         <form
           className="inline-edit-form"
@@ -159,15 +163,26 @@ function TaskCard({
           </div>
         </form>
       ) : (
-        <div>
-          <h3>{task.title}</h3>
+        <div className="task-content">
+          <div className="task-title-row">
+            <h3>{task.title}</h3>
+          </div>
+
           <p>{task.description || "Sem descrição cadastrada."}</p>
 
-          {dueDateInfo && (
-            <small className={`task-due-date ${dueDateInfo.className}`}>
-              {dueDateInfo.text}
-            </small>
-          )}
+          <div className="task-meta-row">
+            {dueDateInfo && (
+              <small className={`task-due-date ${dueDateInfo.className}`}>
+                {dueDateInfo.text}
+              </small>
+            )}
+
+            {isCompleted && (
+              <small className="task-status-note">
+                Tarefa finalizada
+              </small>
+            )}
+          </div>
         </div>
       )}
 
