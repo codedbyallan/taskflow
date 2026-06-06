@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import SummaryCards from "./components/SummaryCards";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
+import TaskFilters from "./components/TaskFilters";
 import {
   completeTask,
   createTask,
@@ -31,6 +32,8 @@ function App() {
   const [editPriority, setEditPriority] = useState("medium");
   const [editDueDate, setEditDueDate] = useState("");
   const [editError, setEditError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
     async function loadTasks() {
@@ -52,6 +55,82 @@ function App() {
     (task) => task.status === "completed"
   ).length;
   const pendingTasks = tasks.filter((task) => task.status === "pending").length;
+
+  function parseTaskDate(dateValue) {
+    if (!dateValue) {
+      return null;
+    }
+
+    const dateOnly = dateValue.split("T")[0];
+    const [year, month, day] = dateOnly.split("-").map(Number);
+
+    const date = new Date(year, month - 1, day);
+    date.setHours(0, 0, 0, 0);
+
+    return date;
+  }
+
+  function getTodayDate() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return today;
+  }
+
+  function matchesDateFilter(task) {
+    const today = getTodayDate();
+    const dueDate = parseTaskDate(task.dueDate);
+
+    if (activeFilter === "all") {
+      return true;
+    }
+
+    if (activeFilter === "pending") {
+      return task.status === "pending";
+    }
+
+    if (activeFilter === "completed") {
+      return task.status === "completed";
+    }
+
+    if (activeFilter === "no-date") {
+      return task.status !== "completed" && !task.dueDate;
+    }
+
+    if (!dueDate || task.status === "completed") {
+      return false;
+    }
+
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+    if (activeFilter === "overdue") {
+      return diffDays < 0;
+    }
+
+    if (activeFilter === "today") {
+      return diffDays === 0;
+    }
+
+    if (activeFilter === "upcoming") {
+      return diffDays > 0 && diffDays <= 7;
+    }
+
+    return true;
+  }
+
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  const filteredTasks = tasks.filter((task) => {
+    const title = task.title?.toLowerCase() || "";
+    const description = task.description?.toLowerCase() || "";
+
+    const matchesSearch =
+      title.includes(normalizedSearchTerm) ||
+      description.includes(normalizedSearchTerm);
+
+    return matchesSearch && matchesDateFilter(task);
+  });
 
   async function handleCreateTask(event) {
     event.preventDefault();
@@ -206,6 +285,14 @@ function App() {
             </div>
           </div>
 
+          <TaskFilters
+            searchTerm={searchTerm}
+            activeFilter={activeFilter}
+            resultsCount={filteredTasks.length}
+            onSearchChange={setSearchTerm}
+            onFilterChange={setActiveFilter}
+          />
+
           {showForm && (
             <TaskForm
               title={title}
@@ -223,7 +310,7 @@ function App() {
           )}
 
           <TaskList
-            tasks={tasks}
+            tasks={filteredTasks}
             isLoading={isLoading}
             errorMessage={errorMessage}
             editingTaskId={editingTaskId}
