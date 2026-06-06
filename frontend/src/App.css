@@ -410,6 +410,48 @@ button {
   gap: 14px;
 }
 
+.task-groups {
+  display: grid;
+  gap: 22px;
+}
+
+.task-group {
+  display: grid;
+  gap: 12px;
+}
+
+.task-group-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 4px 2px;
+}
+
+.task-group-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.task-group-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.86rem;
+}
+
+.task-group-header span {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #2563eb;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
 .task-card {
   position: relative;
   display: flex;
