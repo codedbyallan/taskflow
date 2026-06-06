@@ -12,6 +12,7 @@ function TaskFilters({
       { value: "overdue", label: "Atrasadas" },
       { value: "today", label: "Hoje" },
       { value: "upcoming", label: "Próximas" },
+      { value: "future", label: "Futuras" },
       { value: "no-date", label: "Sem prazo" },
     ];
   

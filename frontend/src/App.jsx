@@ -116,6 +116,10 @@ function App() {
       return diffDays > 0 && diffDays <= 7;
     }
 
+    if (activeFilter === "future") {
+      return diffDays > 7;
+    }
+
     return true;
   }
 
