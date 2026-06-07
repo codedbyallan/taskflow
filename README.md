@@ -8,8 +8,8 @@ O TaskFlow é uma aplicação fullstack para organização de tarefas, construí
 
 ## Links do projeto
 
-- **Frontend publicado:** https://taskflow-web-e6fr.onrender.com
-- **Backend publicado:** https://taskflow-api-jkpb.onrender.com/api/tasks
+- **Frontend publicado:** [https://taskflow-web-e6fr.onrender.com](https://taskflow-web-e6rf.onrender.com/)
+- **Backend publicado:** [https://taskflow-api-jkpb.onrender.com/api/tasks](https://taskflow-api-jkpb.onrender.com/api/tasks)
 - **Repositório:** https://github.com/codedbyallan/taskflow
 
 > Observação: como o projeto está hospedado no plano gratuito do Render, a primeira requisição pode demorar alguns segundos quando o serviço estiver inativo.
